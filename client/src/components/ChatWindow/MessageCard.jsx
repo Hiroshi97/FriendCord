@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 
-export default function MessageCard({ text, sender, avatar }) {
+const MessageCard = ({ text, sender, avatar }) => {
   const renderSender = () => (
     <Row className="justify-content-start">
       <div className="message-card-send">
@@ -26,3 +26,5 @@ export default function MessageCard({ text, sender, avatar }) {
 
   return <>{sender ? renderSender() : renderReceiver()}</>;
 }
+
+export default React.memo(MessageCard);

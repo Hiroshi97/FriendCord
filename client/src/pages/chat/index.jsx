@@ -13,7 +13,7 @@ import ChatWindow from "../../components/ChatWindow";
 
 const ENDPOINT = "localhost:8000";
 
-export default function Chat() {
+function Chat() {
   const dispatch = useDispatch();
   const messages = useSelector((state) => state.chatsState.messages);
   const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -31,7 +31,6 @@ export default function Chat() {
         id2: selectedFriend.friend._id,
       })
       .then((response) => {
-        console.log(response.data.messages);
         dispatch(getMessages([...response.data.messages]));
       });
     socket.on("message", (data) => {
@@ -66,10 +65,11 @@ export default function Chat() {
         <ChatWindow
           selectedFriend={selectedFriend}
           handleSubmitChatMessage={handleSubmitChatMessage}
-          messageInput={messageInput}
           messages={messages}
         />
       </Row>
     </Container>
   );
 }
+
+export default React.memo(Chat);

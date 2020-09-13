@@ -13,8 +13,7 @@ import MessageCard from "./MessageCard";
 const ChatWindow = ({
   selectedFriend,
   messages,
-  handleSubmitChatMessage,
-  messageInput,
+  handleSubmitChatMessage
 }) => {
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const handleSubmitMessage = (e) => {
@@ -82,7 +81,7 @@ const ChatWindow = ({
                 id="messageInput"
                 placeholder="Type a message..."
                 className="message-input"
-                defaultValue={messageInput}
+                defaultValue=""
                 // onKeyPress={handleKeyPress}
               />
               <InputGroup.Append type="append">
