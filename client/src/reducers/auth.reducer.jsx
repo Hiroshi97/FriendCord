@@ -6,9 +6,9 @@ const initialState = {
 const LOGIN_REQUEST = "LOGIN_REQUEST";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const LOGIN_FAILURE = "LOGIN_FAILURE";
-const SIGNUP_REQUEST = "LOGIN_REQUEST";
-const SIGNUP_SUCCESS = "LOGIN_SUCCESS";
-const SIGNUP_FAILURE = "LOGIN_FAILURE";
+const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 
 const AuthReducer = (state = initialState, { type, payload }) => {
   switch (type) {
