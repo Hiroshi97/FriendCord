@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
@@ -15,12 +15,13 @@ function App() {
     <>
       <Router>
         <Switch>
-          <Route exact path="/login" component={Login} />
+          <Route exact path={["/login", "/"]} component={Login} />
           <Route exact path="/signup" component={Signup} />
           <AuthRoute isLoggedIn={isLoggedIn} exact path="/chat" component={Chat} />
           {/* <Route component={Page404}/> */}
         </Switch>
       </Router>
+
     </>
   );
 }
