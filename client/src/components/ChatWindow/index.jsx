@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Row, Col, Form, Button, InputGroup, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,12 +10,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import MessageCard from "./MessageCard";
 
-const ChatWindow = ({
-  selectedFriend,
-  messages,
-  handleSubmitChatMessage
-}) => {
+const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
   const userInfo = JSON.parse(localStorage.getItem("user"));
+
+  const prevLengthRef = useRef(messages.length);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    console.log(containerRef);
+    if (prevLengthRef.current < messages.length) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+    prevLengthRef.current = messages.length;
+  }, [messages]);
   const handleSubmitMessage = (e) => {
     handleSubmitChatMessage(e);
   };
@@ -30,10 +37,10 @@ const ChatWindow = ({
               <span className="status"></span>
             </div>
             <div className="username-wrapper mt-auto pl-2 text-left">
-                <span className="font-weight-bold">
-                  {selectedFriend.friend.username}
-                </span>
-                <p>{selectedFriend.friend.email}</p>
+              <span className="font-weight-bold">
+                {selectedFriend.friend.username}
+              </span>
+              <p>{selectedFriend.friend.email}</p>
             </div>
             <Col xs="2" className="options-wrapper ml-auto mt-auto pb-4">
               <Row className="align-items-center justify-content-around">
@@ -50,7 +57,7 @@ const ChatWindow = ({
             </Col>
           </Row>
         </Card.Header>
-        <Card.Body className="messages-window">
+        <Card.Body ref={containerRef} className="messages-window">
           {messages.length > 0 &&
             messages.map((m, index) => (
               <div key={index}>
