@@ -9,19 +9,15 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import MessageCard from "./MessageCard";
+import PropTypes from "prop-types";
 
 const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
   const userInfo = JSON.parse(localStorage.getItem("user"));
-
+  const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
   const containerRef = useRef(null);
-
   useEffect(() => {
-    console.log(containerRef);
-    if (prevLengthRef.current < messages.length) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-    prevLengthRef.current = messages.length;
+    lastMessage.current.scrollIntoView({ behavior: "auto" });
   }, [messages]);
   const handleSubmitMessage = (e) => {
     handleSubmitChatMessage(e);
@@ -29,87 +25,94 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
 
   return (
     <>
-    {selectedFriend &&
-    <Col className="text-center chat-window">
-      <Card>
-        <Card.Header>
-          <Row>
-            <div className="avatar-wrapper">
-              <img src={selectedFriend.friend.avatar} alt="" />
-              <span className="status"></span>
-            </div>
-            <div className="username-wrapper mt-auto pl-2 text-left">
-              <span className="font-weight-bold">
-                {selectedFriend.friend.username}
-              </span>
-              <p>{selectedFriend.friend.email}</p>
-            </div>
-            <Col xs="2" className="options-wrapper ml-auto mt-auto pb-4">
-              <Row className="align-items-center justify-content-around">
-                <Button>
-                  <FontAwesomeIcon icon={faVideo} />
-                </Button>
-                <Button>
-                  <FontAwesomeIcon icon={faPhone} />
-                </Button>
-                <Button>
-                  <FontAwesomeIcon icon={faEllipsisV} />
-                </Button>
+      {selectedFriend && (
+        <Col className="text-center chat-window">
+          <Card>
+            <Card.Header>
+              <Row>
+                <div className="avatar-wrapper">
+                  <img src={selectedFriend.friend.avatar} alt="" />
+                  <span className="status"></span>
+                </div>
+                <div className="username-wrapper mt-auto pl-2 text-left">
+                  <span className="font-weight-bold">
+                    {selectedFriend.friend.username}
+                  </span>
+                  <p>{selectedFriend.friend.email}</p>
+                </div>
+                <Col xs="2" className="options-wrapper ml-auto mt-auto pb-4">
+                  <Row className="align-items-center justify-content-around">
+                    <Button>
+                      <FontAwesomeIcon icon={faVideo} />
+                    </Button>
+                    <Button>
+                      <FontAwesomeIcon icon={faPhone} />
+                    </Button>
+                    <Button>
+                      <FontAwesomeIcon icon={faEllipsisV} />
+                    </Button>
+                  </Row>
+                </Col>
               </Row>
-            </Col>
-          </Row>
-        </Card.Header>
-        <Card.Body ref={containerRef} className="messages-window">
-          {messages.length > 0 &&
-            messages.map((m, index) => (
-              <div key={index}>
-                <MessageCard
-                  text={m.message}
-                  sender={userInfo.auth_id === m.from}
-                  avatar={
-                    userInfo.auth_id === m.from
-                      ? userInfo.avatar
-                      : selectedFriend.friend.avatar
-                  }
-                />
-              </div>
-            ))}
-        </Card.Body>
-        <Card.Footer>
-          <Form autoComplete="off" onSubmit={handleSubmitMessage}>
-            <InputGroup>
-              <InputGroup.Prepend type="prepend">
-                <Button variant="secondary">
-                  <FontAwesomeIcon icon={faPaperclip} />
-                </Button>
-              </InputGroup.Prepend>
-              <Form.Control
-                // as="textarea"
-                // rows="2"
-                autoComplete="off"
-                id="messageInput"
-                placeholder="Type a message..."
-                className="message-input"
-                defaultValue=""
-                // onKeyPress={handleKeyPress}
-              />
-              <InputGroup.Append type="append">
-                <Button
-                  type="submit"
-                  disabled={selectedFriend === ""}
-                  variant="secondary"
-                >
-                  <FontAwesomeIcon icon={faPaperPlane} />
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-        </Card.Footer>
-      </Card>
-    </Col>
-    }
+            </Card.Header>
+            <Card.Body className="messages-window">
+              {messages.length > 0 &&
+                messages.map((m, index) => (
+                  <div key={index}>
+                    <MessageCard
+                      text={m.message}
+                      sender={userInfo.auth_id === m.from}
+                      avatar={
+                        userInfo.auth_id === m.from
+                          ? userInfo.avatar
+                          : selectedFriend.friend.avatar
+                      }
+                    />
+                  </div>
+                ))}
+              <div ref={lastMessage} />
+            </Card.Body>
+            <Card.Footer>
+              <Form autoComplete="off" onSubmit={handleSubmitMessage}>
+                <InputGroup>
+                  <InputGroup.Prepend type="prepend">
+                    <Button variant="secondary">
+                      <FontAwesomeIcon icon={faPaperclip} />
+                    </Button>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    // as="textarea"
+                    // rows="2"
+                    autoComplete="off"
+                    id="messageInput"
+                    placeholder="Type a message..."
+                    className="message-input"
+                    defaultValue=""
+                    // onKeyPress={handleKeyPress}
+                  />
+                  <InputGroup.Append type="append">
+                    <Button
+                      type="submit"
+                      disabled={selectedFriend === ""}
+                      variant="secondary"
+                    >
+                      <FontAwesomeIcon icon={faPaperPlane} />
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Form>
+            </Card.Footer>
+          </Card>
+        </Col>
+      )}
     </>
   );
+};
+
+ChatWindow.propTypes = {
+  selectedFriend: PropTypes.object,
+  messages: PropTypes.array,
+  handleSubmitChatMessage: PropTypes.func,
 };
 
 export default React.memo(ChatWindow);
