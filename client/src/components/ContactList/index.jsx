@@ -81,9 +81,11 @@ const ContactList = ({ friends, handleSelectFriend }) => {
                 }}
               >
                 <Row>
-                  <Col xs="3" className="avatar-wrapper">
-                    <img src={f.friend.avatar} alt="" />
-                    <span className="status"></span>
+                  <Col xs="3">
+                    <div className="avatar-wrapper">
+                      <img src={f.friend.avatar} alt="" />
+                      <span className="status"></span>
+                    </div>
                   </Col>
                   <Col className="username-wrapper mt-auto pl-0 text-left">
                     <span className="font-weight-bold">
@@ -175,6 +177,6 @@ const ContactList = ({ friends, handleSelectFriend }) => {
       </div>
     </div>
   );
-}
+};
 
 export default React.memo(ContactList);
