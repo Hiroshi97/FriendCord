@@ -28,6 +28,8 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
   };
 
   return (
+    <>
+    {selectedFriend &&
     <Col className="text-center chat-window">
       <Card>
         <Card.Header>
@@ -105,6 +107,8 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
         </Card.Footer>
       </Card>
     </Col>
+    }
+    </>
   );
 };
 

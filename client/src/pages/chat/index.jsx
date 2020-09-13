@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import {
-  Container,
-  Row
-} from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import "./chat.scss";
@@ -25,18 +22,21 @@ function Chat() {
   const socket = socketIOClient(ENDPOINT);
 
   useEffect(() => {
-    axios
-      .post(`chats/getMessages`, {
-        id1: userInfo.auth_id,
-        id2: selectedFriend.friend._id,
-      })
-      .then((response) => {
-        dispatch(getMessages([...response.data.messages]));
+    if (selectedFriend) {
+      axios
+        .post(`chats/getMessages`, {
+          id1: userInfo.auth_id,
+          id2: selectedFriend.friend._id,
+        })
+        .then((response) => {
+          dispatch(getMessages([...response.data.messages]));
+        });
+
+      socket.on("message", (data) => {
+        console.log(data);
+        dispatch(postMessage(data));
       });
-    socket.on("message", (data) => {
-      console.log(data);
-      dispatch(postMessage(data));
-    });
+    }
   }, [messageInput, selectedFriend]);
 
   const handleSelectFriend = useCallback((friend) => {
