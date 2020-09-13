@@ -74,6 +74,8 @@
           background: transparent !important;
           outline: none !important;
           border: 0 !important;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
           border-bottom: 1px solid white !important;
           box-shadow: none !important;
           &:hover {
@@ -93,6 +95,7 @@
                 // background-color: transparent !important;
                 // color: white !important;
                 border: none !important;
+                border-top: 1px solid white !important;
                 border-bottom: 1px solid white !important;
                 border-right: 1px solid white !important;
               }
@@ -190,10 +193,15 @@
 
   .chat-page .chat-content .contact-list-window .contact-list .nav .nav-item {
     width: 50%;
-
   }
 
-  .chat-page .chat-content .contact-list-window .contact-list .nav .nav-item .nav-link {
+  .chat-page
+    .chat-content
+    .contact-list-window
+    .contact-list
+    .nav
+    .nav-item
+    .nav-link {
     padding-right: 25px;
     border-top-left-radius: 0 !important;
     border-bottom: 1px solid white !important;
@@ -201,7 +209,13 @@
     border-top: 0 !important;
   }
 
-  .chat-page .chat-content .contact-list-window .contact-list .nav .nav-item .nav-link:hover {
+  .chat-page
+    .chat-content
+    .contact-list-window
+    .contact-list
+    .nav
+    .nav-item
+    .nav-link:hover {
     padding-right: 25px;
     border-top-left-radius: 0 !important;
     border-bottom: 1px solid white !important;
