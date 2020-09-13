@@ -1,40 +1,40 @@
-.login-page .login-content{
-    padding-top: 3%;
-    height: 100vh;
+.login-page {
+	.login-content {
+		padding-top: 3%;
+		height: 100vh;
+		.login-image {
+			background: url('../../assets/login-background.jpg') no-repeat;
+			background-position: center;
+			background-size: contain;
+			z-index: 1;
+		}
+		.row {
+			height: calc(100vh - 100px);
+		}
+		.btn {
+			border-radius: 16px;
+		}
+		.login-form {
+			padding-top: 200px;
+			padding-bottom: 200px;
+			.spinner-wrapper {
+				position: absolute;
+				display: block;
+				width: 100%;
+				height: 100%;
+				padding-top: 100px;
+				padding-bottom: 200px;
+				left: 45%;
+			}
+		}
+	}
 }
-
-.login-page .login-content .login-image {
-    background: url('../../assets/login-background.jpg') no-repeat;
-    background-position: center;
-    background-size: contain;
-    z-index: 1;
-}
-
-.login-page .login-content .row {
-    height: calc(100vh - 100px);
-}
-
-.login-page .login-content .btn {
-    border-radius: 16px;
-}
-
-.login-page .login-content .login-form {
-    padding-top: 200px;
-    padding-bottom: 200px;
-}
-
-.login-page .login-content .login-form .spinner-wrapper {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding-top: 100px;
-    padding-bottom: 200px;
-    left: 45%;
-}
-
 @media only screen and (max-width: 767px) {
-    .login-page .login-content .login-image {
-        display: none;
-    }
+	.login-page {
+		.login-content {
+			.login-image {
+				display: none;
+			}
+		}
+	}
 }

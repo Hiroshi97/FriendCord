@@ -40,15 +40,15 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
                   </span>
                   <p>{selectedFriend.friend.email}</p>
                 </div>
-                <Col xs="2" className="options-wrapper ml-auto mt-auto pb-4">
-                  <Row className="align-items-center justify-content-around">
-                    <Button>
+                <Col xs="12" sm="4" md="3" className="options-wrapper ml-auto mt-auto pb-4">
+                  <Row className="align-items-center justify-content-end">
+                    <Button className="px-2">
                       <FontAwesomeIcon icon={faVideo} />
                     </Button>
-                    <Button>
+                    <Button className="px-2">
                       <FontAwesomeIcon icon={faPhone} />
                     </Button>
-                    <Button>
+                    <Button className="px-2">
                       <FontAwesomeIcon icon={faEllipsisV} />
                     </Button>
                   </Row>
