@@ -1,5 +1,6 @@
 import React from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const MessageCard = ({ text, sender, avatar }) => {
   const renderSender = () => (
@@ -26,5 +27,12 @@ const MessageCard = ({ text, sender, avatar }) => {
 
   return <>{sender ? renderSender() : renderReceiver()}</>;
 }
+
+
+MessageCard.propTypes = {
+  text: PropTypes.string,
+  sender: PropTypes.bool,
+  avatar: PropTypes.string
+};
 
 export default React.memo(MessageCard);

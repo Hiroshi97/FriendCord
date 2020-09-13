@@ -3,16 +3,11 @@ import PropTypes from "prop-types";
 import { Row, Col, Form, Button, Card, Badge, Nav } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPaperPlane,
-  faPaperclip,
   faUserPlus,
   faCog,
   faSignOutAlt,
   faCommentDots,
   faUsers,
-  faPhone,
-  faVideo,
-  faEllipsisV,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -177,6 +172,11 @@ const ContactList = ({ friends, handleSelectFriend }) => {
       </div>
     </div>
   );
+};
+
+ContactList.propTypes = {
+  friends: PropTypes.array, 
+  handleSelectFriend: PropTypes.func
 };
 
 export default React.memo(ContactList);
