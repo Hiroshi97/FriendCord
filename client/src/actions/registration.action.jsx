@@ -6,15 +6,15 @@ const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 
 export const signupRequest = () => ({
-  type: SIGNUP_REQUEST,
+  type: SIGNUP_REQUEST
 });
 
 export const signupSuccess = () => ({
-  type: SIGNUP_SUCCESS,
+  type: SIGNUP_SUCCESS
 });
 
 export const signupFailure = () => ({
-  type: SIGNUP_FAILURE,
+  type: SIGNUP_FAILURE
 });
 
 // export const signup = (userInfo) => {
