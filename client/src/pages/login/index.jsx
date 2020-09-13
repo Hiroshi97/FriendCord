@@ -20,19 +20,6 @@ export default function Login() {
     dispatch(login(username, password));
   };
 
-  const renderLoading = () => {
-    return (
-      <div className="spinner-wrapper">
-        <div
-          className="spinner-border text-primary position-absolute"
-          role="status"
-        >
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
-  };
-
   const renderForm = () => {
     return (
       <>
@@ -44,9 +31,15 @@ export default function Login() {
           <Form.Label htmlFor="password">Password</Form.Label>
           <Form.Control type="password" id="password" placeholder="Password" />
         </Form.Group>
-        <Button className="d-block mx-auto" type="submit">
-          Login
-        </Button>
+        {isLoading ? (
+          <div className="spinner-border text-primary d-block m-auto" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          <Button className="d-block mx-auto" type="submit">
+            Login
+          </Button>
+        )}
         <p className="text-center">
           Do not have an account yet?{" "}
           <Link className="d-inline-block mx-auto mt-3" to="/signup">
@@ -65,7 +58,7 @@ export default function Login() {
           <Col md="6" className="login-form pt-auto">
             <h1 className="text-center">LOGIN</h1>
             <Form onSubmit={handleSubmission} className="position-relative">
-              {isLoading ? renderLoading() : renderForm()}
+              {renderForm()}
             </Form>
           </Col>
         </Row>

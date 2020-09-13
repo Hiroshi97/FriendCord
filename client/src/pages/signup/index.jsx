@@ -13,6 +13,7 @@ import { triggerAlert } from "../../utils/trigger-alert";
 
 export default function Signup() {
   const isLoggedIn = useSelector((state) => state.authState.result);
+  const isLoading = useSelector((state) => state.authState.loading);
   const history = useHistory();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState([]);
@@ -59,16 +60,18 @@ export default function Signup() {
           localStorage.setItem("user", JSON.stringify(res.data));
           setTimeout(() => {
             dispatch(signupSuccess());
-            axios.get("user/friends", { _id: userInfo.auth_id }).then((res) => {
-              localStorage.setItem("friends", JSON.stringify(res.data.friendships));
+            console.log(res.data.auth_id);
+            axios.post("user/friends", { _id: res.data.auth_id }).then((response) => {
+              console.log(response);
+              localStorage.setItem("friends", JSON.stringify(response.data.friendships));
             });
             triggerAlert(
               "success",
               "SIGN UP SUCCESS",
               "You have successfully signed up!"
             );
+            history.push('/chat');
           }, 2000);
-          history.push('/chat');
         })
         .catch((error) => {
           dispatch(signupFailure());
@@ -174,9 +177,13 @@ export default function Signup() {
                       errors[3])}
                 </small>
               </Form.Group>
+              {isLoading ? (
+          <div className="spinner-border text-primary d-block m-auto" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>) :
               <Button className="d-block mx-auto" type="submit">
                 Register
-              </Button>
+              </Button> }
             </Form>
             <p className="text-center">
               Already had an account?{" "}
