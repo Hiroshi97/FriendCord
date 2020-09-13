@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
-import Login from "./pages/login";
-import Signup from "./pages/signup";
-import Chat from "./pages/chat";
+import { Login, Signup, Chat, Logout} from "./pages";
 import { useSelector } from "react-redux";
 import AuthRoute from "./utils/auth-routes";
 
@@ -17,6 +15,7 @@ function App() {
         <Switch>
           <Route exact path={["/login", "/"]} component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/logout" component={Logout}/>
           <AuthRoute isLoggedIn={isLoggedIn} exact path="/chat" component={Chat} />
           {/* <Route component={Page404}/> */}
         </Switch>

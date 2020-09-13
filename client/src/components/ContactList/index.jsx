@@ -10,6 +10,7 @@ import {
   faUsers,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const ContactList = ({ friends, handleSelectFriend }) => {
   const [selectedTab, setSelectedTab] = useState("chats");
@@ -17,6 +18,77 @@ const ContactList = ({ friends, handleSelectFriend }) => {
   const onClickSelectFriend = (f) => {
     handleSelectFriend(f);
   };
+
+  const renderHeader = () => (
+    <Card.Header>
+      <Row className="pb-2">
+        <Col xs="3">
+          <div className="avatar-wrapper">
+            <img src={userInfo.avatar} alt="" />
+            <span className="status"></span>
+          </div>
+        </Col>
+        <Col xs="5" className="username-wrapper mt-auto pl-1 text-left">
+          <p className="pb-2">{userInfo.username}</p>
+        </Col>
+
+        <Col className="options-wrapper my-auto text-left">
+          <Row className="justify-content-around">
+            <Button>
+              <FontAwesomeIcon icon={faUserPlus} />
+            </Button>
+            <Button>
+              <FontAwesomeIcon icon={faCog} />
+            </Button>
+            <Link to="/logout" className="btn-link">
+              <FontAwesomeIcon icon={faSignOutAlt} />
+            </Link>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <div className="searchbar-wrapper">
+          <Form.Control
+            id="searchInput"
+            placeholder="Search"
+            className="search-input w-100"
+          />
+          <div className="searchbar-icon">
+            <FontAwesomeIcon icon={faSearch} />
+          </div>
+        </div>
+      </Row>
+    </Card.Header>
+  );
+
+  const renderTabs = () => (
+    <Nav
+      className="nav-justified"
+      variant="tabs"
+      defaultActiveKey={selectedTab}
+    >
+      <Nav.Item>
+        <Nav.Link
+          onSelect={() => {
+            setSelectedTab("chats");
+          }}
+          eventKey="chats"
+        >
+          <FontAwesomeIcon icon={faCommentDots} />
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link
+          onSelect={() => {
+            setSelectedTab("friends");
+          }}
+          eventKey="friends"
+        >
+          <FontAwesomeIcon icon={faUsers} />
+        </Nav.Link>
+      </Nav.Item>
+    </Nav>
+  );
 
   const renderChatsTab = () => {
     return (
@@ -100,72 +172,9 @@ const ContactList = ({ friends, handleSelectFriend }) => {
     <div>
       <div className="text-center contact-list-window">
         <Card>
-          <Card.Header>
-            <Row className="pb-2">
-              <Col xs="3">
-                <div className="avatar-wrapper">
-                  <img src={userInfo.avatar} alt="" />
-                  <span className="status"></span>
-                </div>
-              </Col>
-              <Col xs="5" className="username-wrapper mt-auto pl-1 text-left">
-                <p className="pb-2">{userInfo.username}</p>
-              </Col>
-
-              <Col className="options-wrapper my-auto text-left">
-                <Row className="justify-content-around">
-                  <Button>
-                    <FontAwesomeIcon icon={faUserPlus} />
-                  </Button>
-                  <Button>
-                    <FontAwesomeIcon icon={faCog} />
-                  </Button>
-                  <Button>
-                    <FontAwesomeIcon icon={faSignOutAlt} />
-                  </Button>
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <div className="searchbar-wrapper">
-                <Form.Control
-                  id="searchInput"
-                  placeholder="Search"
-                  className="search-input w-100"
-                />
-                <div className="searchbar-icon">
-                  <FontAwesomeIcon icon={faSearch} />
-                </div>
-              </div>
-            </Row>
-          </Card.Header>
+          {renderHeader()}
           <Card.Body className="p-0 contact-list text-left">
-            <Nav
-              className="nav-justified"
-              variant="tabs"
-              defaultActiveKey={selectedTab}
-            >
-              <Nav.Item>
-                <Nav.Link
-                  onSelect={() => {
-                    setSelectedTab("chats");
-                  }}
-                  eventKey="chats"
-                >
-                  <FontAwesomeIcon icon={faCommentDots} />
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  onSelect={() => {
-                    setSelectedTab("friends");
-                  }}
-                  eventKey="friends"
-                >
-                  <FontAwesomeIcon icon={faUsers} />
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
+            {renderTabs()}
             {selectedTab === "chats" ? renderChatsTab() : renderFriendsTab()}
           </Card.Body>
         </Card>
@@ -175,8 +184,8 @@ const ContactList = ({ friends, handleSelectFriend }) => {
 };
 
 ContactList.propTypes = {
-  friends: PropTypes.array, 
-  handleSelectFriend: PropTypes.func
+  friends: PropTypes.array,
+  handleSelectFriend: PropTypes.func,
 };
 
 export default React.memo(ContactList);

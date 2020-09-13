@@ -9,6 +9,7 @@ const LOGIN_FAILURE = "LOGIN_FAILURE";
 const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 const SIGNUP_FAILURE = "SIGNUP_FAILURE";
+const LOGOUT = "LOGOUT";
 
 const AuthReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -24,8 +25,10 @@ const AuthReducer = (state = initialState, { type, payload }) => {
         loading: false,
         result: true,
       };
+
     case LOGIN_FAILURE:
     case SIGNUP_FAILURE:
+    case LOGOUT:
       return {
         loading: false,
         result: false,

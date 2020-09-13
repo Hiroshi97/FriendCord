@@ -4,6 +4,7 @@ import { triggerAlert } from "../utils/trigger-alert";
 const LOGIN_REQUEST = "LOGIN_REQUEST";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const LOGIN_FAILURE = "LOGIN_FAILURE";
+const LOGOUT = "LOGOUT";
 
 const loginRequest = () => ({
   type: LOGIN_REQUEST,
@@ -17,6 +18,13 @@ const loginFailure = (error) => ({
   type: LOGIN_FAILURE,
   payload: { error },
 });
+
+export const logout = () => {
+  triggerAlert("success", "LOGOUT SUCCESS", "You have successfully logged out!");
+  return {
+    type: LOGOUT,
+  };
+};
 
 export const login = (username, password) => {
   return (dispatch) => {
@@ -41,6 +49,5 @@ export const login = (username, password) => {
         dispatch(loginFailure());
         triggerAlert("error", "SOMETHING WRONG", error.response.data.msg);
       });
-
   };
 };
