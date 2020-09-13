@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Chat from "./pages/chat";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import AuthRoute from "./utils/auth-routes";
 
 

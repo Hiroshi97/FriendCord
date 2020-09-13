@@ -2,10 +2,8 @@ import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./login.scss";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { login } from "../../actions/auth.action";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   const isLoggedIn = useSelector((state) => state.authState.result);

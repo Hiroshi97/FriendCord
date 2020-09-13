@@ -50,35 +50,39 @@ export default function Signup() {
       password2: password2.value,
     };
 
-    {
-      dispatch(signupRequest());
-      axios
-        .post("/auth/signup", {
-          ...userInfo,
-        })
-        .then((res) => {
-          localStorage.setItem("user", JSON.stringify(res.data));
-          setTimeout(() => {
-            dispatch(signupSuccess());
-            console.log(res.data.auth_id);
-            axios.post("user/friends", { _id: res.data.auth_id }).then((response) => {
+    dispatch(signupRequest());
+    axios
+      .post("/auth/signup", {
+        ...userInfo,
+      })
+      .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        setTimeout(() => {
+          dispatch(signupSuccess());
+          console.log(res.data.auth_id);
+          axios
+            .post("user/friends", { _id: res.data.auth_id })
+            .then((response) => {
               console.log(response);
-              localStorage.setItem("friends", JSON.stringify(response.data.friendships));
+              localStorage.setItem(
+                "friends",
+                JSON.stringify(response.data.friendships)
+              );
             });
-            triggerAlert(
-              "success",
-              "SIGN UP SUCCESS",
-              "You have successfully signed up!"
-            );
-            history.push('/chat');
-          }, 2000);
-        })
-        .catch((error) => {
-          dispatch(signupFailure());
-          if (error.response) setErrors(error.response.data.errors);
-        });
-    }
+          triggerAlert(
+            "success",
+            "SIGN UP SUCCESS",
+            "You have successfully signed up!"
+          );
+          history.push("/chat");
+        }, 2000);
+      })
+      .catch((error) => {
+        dispatch(signupFailure());
+        if (error.response) setErrors(error.response.data.errors);
+      });
   };
+
   return (
     <Container fluid={true} tag="div" className="signup-page">
       <Container className="signup-content">
@@ -178,12 +182,17 @@ export default function Signup() {
                 </small>
               </Form.Group>
               {isLoading ? (
-          <div className="spinner-border text-primary d-block m-auto" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>) :
-              <Button className="d-block mx-auto" type="submit">
-                Register
-              </Button> }
+                <div
+                  className="spinner-border text-primary d-block m-auto"
+                  role="status"
+                >
+                  <span className="sr-only">Loading...</span>
+                </div>
+              ) : (
+                <Button className="d-block mx-auto" type="submit">
+                  Register
+                </Button>
+              )}
             </Form>
             <p className="text-center">
               Already had an account?{" "}
