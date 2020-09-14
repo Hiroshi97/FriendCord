@@ -20,6 +20,7 @@ const botName = "Friendcord Bot";
 app.use(cors());
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Import Routes
 const userRoutes = require("./routes/userRoutes");
@@ -55,14 +56,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", async (msg) => {
-    console.log(msg);
     let uid = createUniqueID(msg.from, msg.to);
     try {
       const message = await (new Message({
         ...msg,
         uid,
       })).save();
-      return io.emit("message", message);
+      return io.emit("result", message);
     }
     catch(err) {
       console.log(err);
