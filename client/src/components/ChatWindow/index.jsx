@@ -10,8 +10,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import MessageCard from "./MessageCard";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
+const ChatWindow = ({ selectedFriend, handleSubmitChatMessage }) => {
+  const messages = useSelector((state) => state.chatsState.messages);
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
@@ -112,7 +114,6 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
 
 ChatWindow.propTypes = {
   selectedFriend: PropTypes.object,
-  messages: PropTypes.array,
   handleSubmitChatMessage: PropTypes.func,
 };
 
