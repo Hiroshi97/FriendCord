@@ -33,7 +33,7 @@ export const login = (username, password) => {
       .post("/auth/login", { username, password })
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data));
-        axios.post("user/friends", { _id: res.data.auth_id }).then((res) => {
+        axios.post("user/friends", { username: res.data.username }).then((res) => {
           localStorage.setItem("friends", JSON.stringify(res.data.friendships));
         });
         setTimeout(() => {
