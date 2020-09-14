@@ -67,6 +67,7 @@ const ChatWindow = ({ selectedFriend, messages, handleSubmitChatMessage }) => {
                           ? userInfo.avatar
                           : selectedFriend.friend.avatar
                       }
+                      messageTime={m.created_at}
                     />
                   </div>
                 ))}
