@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect,  useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
@@ -8,34 +8,43 @@ import { getMessages, postMessage } from "../../actions/chats.action";
 import ContactList from "../../components/ContactList";
 import ChatWindow from "../../components/ChatWindow";
 
-const ENDPOINT = "localhost:8000";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT || "localhost:8000";
 
 function Chat() {
+  const socket = socketIOClient(ENDPOINT);
   const dispatch = useDispatch();
-  const messages = useSelector((state) => state.chatsState.messages);
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const [friends, setFriends] = useState(
     JSON.parse(localStorage.getItem("friends")) || []
   );
   const [messageInput, setMessageInput] = useState("");
   const [selectedFriend, setSelectedFriend] = useState(friends[0] || "");
-  const socket = socketIOClient(ENDPOINT);
+
 
   useEffect(() => {
     if (selectedFriend) {
       axios
-        .post(`chats/getMessages`, {
-          id1: userInfo.auth_id,
-          id2: selectedFriend.friend._id,
-        })
+        .post(
+          `chats/getMessages`,
+          {
+            id1: userInfo.auth_id,
+            id2: selectedFriend.friend._id,
+          },
+          {
+            headers: {
+              authorization: userInfo.auth_id + userInfo.auth_id.slice(-3),
+            },
+          }
+        )
         .then((response) => {
           dispatch(getMessages([...response.data.messages]));
         });
 
-      socket.on("message", (data) => {
-        console.log(data);
+      socket.on("result", (data) => {
         dispatch(postMessage(data));
       });
+
+      return () => socket.disconnect();
     }
   }, [messageInput, selectedFriend]);
 
@@ -47,7 +56,7 @@ function Chat() {
     e.preventDefault();
     socket.emit("message", {
       from: userInfo.auth_id,
-      to: selectedFriend._id,
+      to: selectedFriend.friend._id,
       message: e.target.messageInput.value,
     });
     e.target.messageInput.value = "";
@@ -65,7 +74,6 @@ function Chat() {
         <ChatWindow
           selectedFriend={selectedFriend}
           handleSubmitChatMessage={handleSubmitChatMessage}
-          messages={messages}
         />
       </Row>
     </Container>
