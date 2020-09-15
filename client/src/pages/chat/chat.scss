@@ -1,3 +1,19 @@
+.modal {
+  .modal-dialog {
+    .modal-content {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: white;
+      .modal-body {
+        .username-input {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          border: 0 !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
 .chat-page {
   height: 100vh;
   background: #7f7fd5;
@@ -18,9 +34,6 @@
         position: relative;
         width: 70px;
         height: 70px;
-        img {
-          border-radius: 50%;
-        }
         .status {
           position: absolute;
           display: block;
