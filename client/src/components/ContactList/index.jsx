@@ -11,10 +11,20 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import AddFriendWrapper from "./AddFriendWrapper";
+import SettingsWrapper from "./SettingsWrapper";
 
 const ContactList = ({ friends, handleSelectFriend }) => {
+  const [AFWshow, setAFWShow] = useState(false);
+  const [SWshow, setSWShow] = useState(false);
   const [selectedTab, setSelectedTab] = useState("chats");
   const userInfo = JSON.parse(localStorage.getItem("user"));
+  
+  const handleAFWClose = () => setAFWShow(false);
+  const handleAFWShow = () => setAFWShow(true);
+  const handleSWClose = () => setSWShow(false);
+  const handleSWShow = () => setSWShow(true);
+  
   const onClickSelectFriend = (f) => {
     handleSelectFriend(f);
   };
@@ -35,10 +45,10 @@ const ContactList = ({ friends, handleSelectFriend }) => {
         <Col className="options-wrapper my-auto text-left">
           <Row className="justify-content-around">
             <Button>
-              <FontAwesomeIcon icon={faUserPlus} />
+              <FontAwesomeIcon icon={faUserPlus} onClick={handleAFWShow}/>
             </Button>
             <Button>
-              <FontAwesomeIcon icon={faCog} />
+              <FontAwesomeIcon icon={faCog} onClick={handleSWShow}/>
             </Button>
             <Link to="/logout" className="btn-link">
               <FontAwesomeIcon icon={faSignOutAlt} />
@@ -171,6 +181,8 @@ const ContactList = ({ friends, handleSelectFriend }) => {
   return (
     <div>
       <div className="text-center contact-list-window">
+        <AddFriendWrapper show={AFWshow} handleClose={handleAFWClose}/>
+        <SettingsWrapper show={SWshow} handleClose={handleSWClose}/>
         <Card>
           {renderHeader()}
           <Card.Body className="p-0 contact-list text-left">
