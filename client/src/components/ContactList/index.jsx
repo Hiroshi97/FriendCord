@@ -181,7 +181,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
   return (
     <div>
       <div className="text-center contact-list-window">
-        <AddFriendWrapper show={AFWshow} handleClose={handleAFWClose}/>
+        <AddFriendWrapper friends={friends} show={AFWshow} handleClose={handleAFWClose}/>
         <SettingsWrapper show={SWshow} handleClose={handleSWClose}/>
         <Card>
           {renderHeader()}
