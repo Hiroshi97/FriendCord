@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Form, Button, Card, Badge, Nav } from "react-bootstrap";
+import { Row, Col, Form, Button, Card, Badge, Nav, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserPlus,
@@ -34,7 +34,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
       <Row className="pb-2">
         <Col xs="3">
           <div className="avatar-wrapper">
-            <img src={userInfo.avatar} alt="" />
+            <Image src={userInfo.avatar} alt="" roundedCircle/>
             <span className="status"></span>
           </div>
         </Col>
@@ -107,7 +107,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
           <Row>
             <Col xs="3">
               <div className="avatar-wrapper">
-                <img src={userInfo.avatar} alt="" />
+                <Image src={userInfo.avatar} alt="" roundedCircle/>
                 <span className="status"></span>
               </div>
             </Col>
@@ -134,7 +134,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
           <Row>
             <Col xs="3">
               <div className="avatar-wrapper">
-                <img src={userInfo.avatar} alt="" />
+                <Image src={userInfo.avatar} alt="" roundedCircle/>
                 <span className="status"></span>
               </div>
             </Col>
@@ -160,7 +160,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
                 <Row>
                   <Col xs="3">
                     <div className="avatar-wrapper">
-                      <img src={f.friend.avatar} alt="" />
+                      <Image src={f.friend.avatar} alt="" roundedCircle/>
                       <span className="status"></span>
                     </div>
                   </Col>

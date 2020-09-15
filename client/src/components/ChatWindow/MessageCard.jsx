@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Row, OverlayTrigger, Tooltip, Image } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 const MessageCard = ({ text, sender, avatar, messageTime }) => {
@@ -36,7 +36,7 @@ const MessageCard = ({ text, sender, avatar, messageTime }) => {
       </OverlayTrigger>
 
       <div className="avatar-wrapper">
-        <img src={avatar} alt="" />
+        <Image src={avatar} alt="" roundedCircle/>
       </div>
     </Row>
   );
@@ -44,7 +44,7 @@ const MessageCard = ({ text, sender, avatar, messageTime }) => {
   const renderReceiver = () => (
     <Row className={"justify-content-end"}>
       <div className="avatar-wrapper">
-        <img src={avatar} alt="" />
+        <Image src={avatar} alt="" roundedCircle/>
       </div>
       <OverlayTrigger
         placement="right"

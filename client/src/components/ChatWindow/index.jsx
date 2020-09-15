@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Row, Col, Form, Button, InputGroup, Card } from "react-bootstrap";
+import { Row, Col, Form, Button, InputGroup, Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPaperPlane,
@@ -33,7 +33,7 @@ const ChatWindow = ({ selectedFriend, handleSubmitChatMessage }) => {
             <Card.Header>
               <Row>
                 <div className="avatar-wrapper">
-                  <img src={selectedFriend.friend.avatar} alt="" />
+                  <Image src={selectedFriend.friend.avatar} alt="" roundedCircle/>
                   <span className="status"></span>
                 </div>
                 <div className="username-wrapper mt-auto pl-2 text-left">
