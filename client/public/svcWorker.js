@@ -1,27 +1,27 @@
-var CACHE_NAME = 'task-manager-pwa';
+var CACHE_NAME = 'pwa-friendcord';
 var urlsToCache = [
   '/',
   '/completed'
 ];
 
-// Install service worker
+// Install a service worker
 self.addEventListener('install', event => {
-  // Perform the install steps
+  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
-        console.log('Cache opened');
+        console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
   );
 });
 
-// Cache and return the requests
+// Cache and return requests
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Return response as Cache is hit 
+        // Cache hit - return response
         if (response) {
           return response;
         }
@@ -31,9 +31,9 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Update service worker
+// Update a service worker
 self.addEventListener('activate', event => {
-  var cacheWhitelist = ['task-manager-pwa'];
+  var cacheWhitelist = ['pwa-friendcord'];
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
