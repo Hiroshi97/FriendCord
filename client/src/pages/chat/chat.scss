@@ -4,6 +4,13 @@
       background-color: rgba(0, 0, 0, 0.4);
       color: white;
       .modal-body {
+        .toast {
+          position: absolute;
+          background-color: #444444;
+          color: white; 
+          top: 10px;
+          left: 35%;
+        }
         .username-input {
           background-color: rgba(255, 255, 255, 0.1) !important;
           border: 0 !important;

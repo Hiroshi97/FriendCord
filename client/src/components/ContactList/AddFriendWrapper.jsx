@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { Modal, Button, Form, Image } from "react-bootstrap";
+import { Modal, Button, Form, Image, Toast } from "react-bootstrap";
 import axios from "axios";
 
 export default function AddFriendWrapper({ friends, show, handleClose }) {
   const usernameRef = useRef(null);
   const userInfo = JSON.parse(localStorage.getItem('user'));
   const [personInfo, setPersonInfo] = useState(null);
+  const [showError, setShowError] = useState(false);
   const handleCloseModal = () => {
     handleClose();
     setPersonInfo(null);
@@ -16,6 +17,7 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
     if (usernameRef.current.value) {
       axios.get("/user/" + usernameRef.current.value).then((res) => {
         const { user } = res.data;
+        if (user === null) setShowError(true);
         setPersonInfo(user);
       });
     }
@@ -32,6 +34,13 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
         </Modal.Header>
 
         <Modal.Body>
+
+        
+        <Toast show={showError} onClose={() => setShowError(false)} delay={2000} autohide>
+          <Toast.Body>A user is not found</Toast.Body>
+        </Toast>
+
+
           <Form.Control
             ref={usernameRef}
             autoComplete="off"
