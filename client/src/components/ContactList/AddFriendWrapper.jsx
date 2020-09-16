@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { Modal, Button, Form, Image, Toast } from "react-bootstrap";
 import axios from "axios";
 
-export default function AddFriendWrapper({ friends, show, handleClose }) {
+const AddFriendWrapper = ({ friends, show, handleClose }) => {
   const usernameRef = useRef(null);
-  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const userInfo = JSON.parse(localStorage.getItem("user"));
   const [personInfo, setPersonInfo] = useState(null);
   const [showError, setShowError] = useState(false);
   const handleCloseModal = () => {
@@ -23,23 +23,26 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") handleSearch();
+  };
+
   return (
     <div>
-      <Modal
-        show={show}
-        onHide={handleCloseModal}
-      >
+      <Modal show={show} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Add Friend</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-
-        
-        <Toast show={showError} onClose={() => setShowError(false)} delay={2000} autohide>
-          <Toast.Body>A user is not found</Toast.Body>
-        </Toast>
-
+          <Toast
+            show={showError}
+            onClose={() => setShowError(false)}
+            delay={2000}
+            autohide
+          >
+            <Toast.Body>A user is not found</Toast.Body>
+          </Toast>
 
           <Form.Control
             ref={usernameRef}
@@ -48,11 +51,12 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
             placeholder="Search friends..."
             className="username-input"
             defaultValue=""
+            onKeyPress={handleKeyPress}
           />
           {personInfo && (
             <div className="text-center">
               <Image
-                className="d-block mx-auto mt-2"
+                className="d-block mx-auto mt-3"
                 src={personInfo.avatar}
                 alt=""
                 roundedCircle
@@ -62,7 +66,15 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
                 <li>Name: {personInfo.name}</li>
                 <li>Email: {personInfo.email}</li>
               </ul>
-              { (friends.some((friend)=>friend.friend.username === personInfo.username)) ? <p>You and <strong>{personInfo.username}</strong> are friends.</p> : ((userInfo.username !== personInfo.username) ? <Button> Add Friend </Button> : null)}
+              {friends.some(
+                (friend) => friend.friend.username === personInfo.username
+              ) ? (
+                <p>
+                  You and <strong>{personInfo.username}</strong> are friends.
+                </p>
+              ) : userInfo.username !== personInfo.username ? (
+                <Button> Add Friend </Button>
+              ) : null}
             </div>
           )}
         </Modal.Body>
@@ -78,7 +90,9 @@ export default function AddFriendWrapper({ friends, show, handleClose }) {
       </Modal>
     </div>
   );
-}
+};
+
+export default React.memo(AddFriendWrapper);
 
 AddFriendWrapper.propTypes = {
   friends: PropTypes.array,

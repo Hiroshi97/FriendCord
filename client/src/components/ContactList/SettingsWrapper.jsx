@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 
-export default function SettingsWrapper({show, handleClose}) {
+const SettingsWrapper = ({show, handleClose}) => {
 
   return (
     <div>
@@ -27,6 +27,8 @@ export default function SettingsWrapper({show, handleClose}) {
     </div>
   );
 }
+
+export default React.memo(SettingsWrapper);
 
 SettingsWrapper.propTypes = {
   show: PropTypes.bool,

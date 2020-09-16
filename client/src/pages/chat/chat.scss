@@ -3,6 +3,13 @@
     .modal-content {
       background-color: rgba(0, 0, 0, 0.4);
       color: white;
+      .modal-header {
+        .close {
+          color: white;
+          outline: 0;
+          border: 0;
+        }
+      }
       .modal-body {
         .toast {
           position: absolute;
@@ -108,7 +115,7 @@
               border-top-left-radius: 0 !important;
               border-top-right-radius: 0 !important;
               border-bottom: 1px solid white !important;
-              border-right: 1px solid white !important;
+              border-right: 0 !important;
               border-top: 1px solid white !important;
               font-size: 16px;
               &:active {
@@ -223,10 +230,9 @@
     .nav
     .nav-item
     .nav-link {
-    padding-right: 25px;
     border-top-left-radius: 0 !important;
     border-bottom: 1px solid white !important;
-    border-right: 1px solid white !important;
+    border-right: 0;
     border-top: 0 !important;
   }
 
@@ -237,10 +243,16 @@
     .nav
     .nav-item
     .nav-link:hover {
-    padding-right: 25px;
     border-top-left-radius: 0 !important;
     border-bottom: 1px solid white !important;
     border-left: 0 !important;
+    border-right: 0 !important;
+  }
+
+  .chat-page .chat-content .contact-list-window .contact-list .nav .nav-item .nav-link:active {
+    border: none !important;
+    border-top: 0 !important;
+    border-bottom: 1px solid white !important;
     border-right: 0 !important;
   }
 }
