@@ -48,16 +48,19 @@
         position: relative;
         width: 70px;
         height: 70px;
+        img {
+          border: 2px solid white !important;
+        }
         .status {
           position: absolute;
           display: block;
           bottom: 10px;
-          left: 53px;
+          left: 55px;
           width: 10px;
           height: 10px;
-          border: 1px solid lightgreen;
+          border: 1px solid white;
           border-radius: 50%;
-          background: lightgreen;
+          background: rgb(3, 253, 3);
         }
       }
       .options-wrapper {
