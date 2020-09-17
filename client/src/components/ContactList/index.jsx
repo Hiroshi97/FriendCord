@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import AddFriendWrapper from "./AddFriendWrapper";
 import SettingsWrapper from "./SettingsWrapper";
 
-const ContactList = ({ friends, handleSelectFriend }) => {
+const ContactList = ({ friends, handleSelectFriend, handleAddFriend, handleCancelFriend }) => {
   const [AFWshow, setAFWShow] = useState(false);
   const [SWshow, setSWShow] = useState(false);
   const [selectedTab, setSelectedTab] = useState("chats");
@@ -32,12 +32,12 @@ const ContactList = ({ friends, handleSelectFriend }) => {
   const renderHeader = () => (
     <Card.Header>
       <Row className="pb-2">
-        <Col xs="3">
+        <div>
           <div className="avatar-wrapper">
             <Image src={userInfo.avatar} alt="" roundedCircle/>
             <span className="status"></span>
           </div>
-        </Col>
+        </div>
         <Col xs="5" className="username-wrapper mt-auto pl-1 text-left">
           <p className="pb-2">{userInfo.username}</p>
         </Col>
@@ -111,11 +111,11 @@ const ContactList = ({ friends, handleSelectFriend }) => {
                 <span className="status"></span>
               </div>
             </Col>
-            <Col xs="6" className="text-left username-wrapper mt-auto px-2">
+            <Col sm="6" className="text-left username-wrapper mt-auto pl-0">
               <span className="font-weight-bold">FriendCord</span>
               <p className="last-message text-truncate">...</p>
             </Col>
-            <Col xs="3" className="time-wrapper mt-auto text-right pl-2">
+            <Col sm="3" className="time-wrapper mt-auto text-right pl-2">
               <span className="message-time">6:17AM</span>
               <p className="unread-messages">
                 <Badge variant="dark">1</Badge>
@@ -170,6 +170,8 @@ const ContactList = ({ friends, handleSelectFriend }) => {
                     </span>
                     <p>{f.friend.email}</p>
                   </Col>
+                  {(f.status === "requested" && <Col xs="1" className="friend-status-wrapper text-left"><Badge variant="dark">Pending</Badge></Col>)}
+                  {(f.status === "pending" && <Col xs="1" className="friend-status-wrapper text-left"><Badge variant="danger">Request</Badge></Col>)}
                 </Row>
               </Button>
             ))
@@ -181,7 +183,7 @@ const ContactList = ({ friends, handleSelectFriend }) => {
   return (
     <div>
       <div className="text-center contact-list-window">
-        <AddFriendWrapper friends={friends} show={AFWshow} handleClose={handleAFWClose}/>
+        <AddFriendWrapper friends={friends} show={AFWshow} handleClose={handleAFWClose} handleAddFriend={handleAddFriend} handleCancelFriend={handleCancelFriend}/>
         <SettingsWrapper show={SWshow} handleClose={handleSWClose}/>
         <Card>
           {renderHeader()}
@@ -198,6 +200,8 @@ const ContactList = ({ friends, handleSelectFriend }) => {
 ContactList.propTypes = {
   friends: PropTypes.array,
   handleSelectFriend: PropTypes.func,
+  handleAddFriend: PropTypes.func,
+  handleCancelFriend: PropTypes.func
 };
 
 export default React.memo(ContactList);
