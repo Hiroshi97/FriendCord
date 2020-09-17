@@ -11,7 +11,6 @@ router.post("/getMessages", async (req, res) => {
       req.headers.authorization === req.body.id1 + req.body.id1.slice(-3) ||
       req.headers.authorization === req.body.id2 + req.body.id2.slice(-3)
     ) {
-      console.log("ABC");
       const { id1, id2 } = req.body;
       const messages = await Message.find({
         $or: [
