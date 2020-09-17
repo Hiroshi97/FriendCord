@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { Modal, Button, Form, Image, Toast } from "react-bootstrap";
 import axios from "axios";
 
-const AddFriendWrapper = ({ friends, show, handleClose }) => {
+const AddFriendWrapper = ({
+  friends,
+  show,
+  handleClose,
+  handleAddFriend,
+  handleCancelFriend,
+}) => {
   const usernameRef = useRef(null);
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const [personInfo, setPersonInfo] = useState(null);
@@ -23,8 +29,124 @@ const AddFriendWrapper = ({ friends, show, handleClose }) => {
     }
   };
 
+  const handleClickAddFriend = (id1, id2) => {
+    handleAddFriend(id1, id2);
+    handleCloseModal();
+  };
+
+  const handleClickCancelFriend = (id1, id2) => {
+    handleCancelFriend(id1, id2);
+    handleCloseModal();
+  };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") handleSearch();
+  };
+
+  const renderFriendStatus = () => {
+    //Accepted Friend
+    if (
+      friends.some(
+        (friend) =>
+          friend.friend.username === personInfo.username &&
+          friend.status === "accepted"
+      )
+    ) {
+      return (
+        <>
+          <p>
+            You and <strong>{personInfo.username}</strong> are friends.
+          </p>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              handleClickCancelFriend(userInfo.auth_id, personInfo._id)
+            }
+          >
+            {" "}
+            Remove{" "}
+          </Button>
+        </>
+      );
+    }
+
+    //Pending request (accept or not)
+    if (
+      friends.some(
+        (friend) =>
+          friend.friend.username === personInfo.username &&
+          friend.status === "pending"
+      )
+    ) {
+      return (
+        <>
+          <p>
+            <strong>{personInfo.username}</strong> has sent you a friend
+            request.
+          </p>
+          <Button
+            onClick={() =>
+              handleClickAddFriend(userInfo.auth_id, personInfo._id)
+            }
+          >
+            {" "}
+            Accept{" "}
+          </Button>
+          <Button
+            className="ml-2"
+            variant="secondary"
+            onClick={() =>
+              handleClickCancelFriend(userInfo.auth_id, personInfo._id)
+            }
+          >
+            {" "}
+            Cancel{" "}
+          </Button>
+        </>
+      );
+    }
+
+    //Pending request (waiting for an acceptant)
+    if (
+      friends.some(
+        (friend) =>
+          friend.friend.username === personInfo.username &&
+          friend.status === "requested"
+      )
+    ) {
+      return (
+        <>
+          <p>
+            You have sent <strong>{personInfo.username}</strong> a friend
+            request.
+          </p>
+          <Button disabled={true}> Waiting for a respond </Button>
+          <Button
+            className="ml-2"
+            variant="secondary"
+            onClick={() =>
+              handleClickCancelFriend(userInfo.auth_id, personInfo._id)
+            }
+          >
+            {" "}
+            Cancel{" "}
+          </Button>
+        </>
+      );
+    }
+
+    if (userInfo.username !== personInfo.username) {
+      return (
+        <Button
+          onClick={() => handleClickAddFriend(userInfo.auth_id, personInfo._id)}
+        >
+          {" "}
+          Add Friend{" "}
+        </Button>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -66,15 +188,7 @@ const AddFriendWrapper = ({ friends, show, handleClose }) => {
                 <li>Name: {personInfo.name}</li>
                 <li>Email: {personInfo.email}</li>
               </ul>
-              {friends.some(
-                (friend) => friend.friend.username === personInfo.username
-              ) ? (
-                <p>
-                  You and <strong>{personInfo.username}</strong> are friends.
-                </p>
-              ) : userInfo.username !== personInfo.username ? (
-                <Button> Add Friend </Button>
-              ) : null}
+              {renderFriendStatus()}
             </div>
           )}
         </Modal.Body>
@@ -98,4 +212,6 @@ AddFriendWrapper.propTypes = {
   friends: PropTypes.array,
   show: PropTypes.bool,
   handleAFWClose: PropTypes.func,
+  handleAddFriend: PropTypes.func,
+  handleCancelFriend: PropTypes.func,
 };
