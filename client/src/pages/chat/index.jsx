@@ -7,7 +7,6 @@ import axios from "axios";
 import { getMessages, postMessage } from "../../actions/chats.action";
 import ContactList from "../../components/ContactList";
 import ChatWindow from "../../components/ChatWindow";
-import sortFriends from "../../utils/sort-friends";
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT || "localhost:8000";
 
@@ -23,6 +22,8 @@ function Chat() {
     friends.length > 0 ? friends[0] : null
   );
   const messages = useSelector((state) => state.chatsState.messages);
+
+  //Sort friendlist
   friends.sort((f1, f2) => {
     if (f1.status === "pending" && f2.status === "accepted") return -1;
     if (f2.status === "pending" && f1.status === "accepted") return 1;
@@ -31,7 +32,7 @@ function Chat() {
     if (f2.status === "requested" && f1.status === "accepted") return -1;
     if (f1.status === "requested" && f2.status === "accepted") return 1;
   });
-  
+
   useEffect(() => {
     if (selectedFriend) {
       axios
