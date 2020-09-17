@@ -156,9 +156,22 @@
     .chat-window {
       overflow: hidden;
       .card {
+        .card-header {
+
+          .toast {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            background: rgba(0, 0, 0, 0.3) !important;
+            z-index: 999;
+          }
+        }
         .messages-window {
-          overflow-y: auto;
           background-color: rgba(0, 0, 0, 0.3) !important;
+          position: relative;
+          overflow-y: auto;
+          
           .message-card-receive {
             border-radius: 15px;
             background-color: #777777;
