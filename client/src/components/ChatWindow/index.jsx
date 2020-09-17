@@ -12,14 +12,14 @@ import MessageCard from "./MessageCard";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-const ChatWindow = ({ selectedFriend, handleSubmitChatMessage }) => {
-  const messages = useSelector((state) => state.chatsState.messages);
+const ChatWindow = ({ selectedFriend, handleSubmitChatMessage, messages}) => {
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
   const containerRef = useRef(null);
   useEffect(() => {
-    lastMessage.current.scrollIntoView({ behavior: "auto" });
+    if(lastMessage.current)
+      lastMessage.current.scrollIntoView({ behavior: "auto" });
   }, [messages]);
   const handleSubmitMessage = (e) => {
     handleSubmitChatMessage(e);
@@ -115,6 +115,7 @@ const ChatWindow = ({ selectedFriend, handleSubmitChatMessage }) => {
 ChatWindow.propTypes = {
   selectedFriend: PropTypes.object,
   handleSubmitChatMessage: PropTypes.func,
+  messages: PropTypes.array
 };
 
 export default React.memo(ChatWindow);
