@@ -44,6 +44,20 @@
       height: calc(100vh - 100px);
       background-color: rgba(0, 0, 0, 0.4) !important;
       color: white !important;
+      .contact-list {
+        .tab {
+          .row {
+            .col-3 {
+              padding-left: 10px !important;
+            }
+          }
+        }
+      }
+      .friend-status-wrapper {
+        .badge {
+          right: 55px !important;
+        }
+      }
       .avatar-wrapper {
         position: relative;
         width: 70px;
@@ -194,8 +208,10 @@
     width: 100px;
   }
 
-  .chat-page .chat-content .contact-list-window .avatar-wrapper {
-    padding-right: 105px;
+  .chat-page .chat-content .friend-status-wrapper {
+    .badge {
+      display: none !important;
+    }
   }
 
   .chat-page .chat-content .contact-list-window .card-header {
@@ -204,6 +220,11 @@
 
   .chat-page .chat-content .contact-list-window .username-wrapper {
     display: none;
+  }
+
+  .chat-page .chat-content .contact-list-window .contact-list .tab .contact .row .col-sm-3 {
+    padding-right: 0 !important;
+    padding-left: 10px !important;
   }
 
   .chat-page .chat-content .contact-list-window .options-wrapper {
