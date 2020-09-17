@@ -87,7 +87,7 @@ function Chat() {
   });
 
   const handleSelectFriend = useCallback((friend) => {
-    setSelectedFriend(friend);
+    setSelectedFriend({...friend});
   });
 
   const handleSubmitChatMessage = useCallback((e) => {
