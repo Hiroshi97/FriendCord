@@ -7,7 +7,7 @@ const http = require("http");
 const mongoose = require("mongoose");
 require("dotenv/config");
 const Message = require("./models/messageModel");
-
+const User = require("./models/userModel");
 const { createUniqueID } = require("./utils/create-unique-id");
 
 const app = express();
@@ -48,21 +48,46 @@ app.get("/*", function (req, res) {
   });
 });
 
+
+// Socket IO Connection
 io.on("connection", (socket) => {
   console.log("New connection");
-  socket.emit("connection", "Welcome to FriendCord");
-  socket.on("connection", (msg) => {
-    io.emit("connection", msg);
-  });
 
-  socket.on("message", async (msg) => {
+  //Send msg
+  socket.on("sendMsg", async (msg) => {
     let uid = createUniqueID(msg.from, msg.to);
     try {
       const message = await (new Message({
         ...msg,
         uid,
       })).save();
-      return io.emit("result", message);
+      return io.emit("receiveMsg", message);
+    }
+    catch(err) {
+      console.log(err);
+    }
+  });
+
+  socket.on("addFriend", async (msg) => {
+    console.log(msg);
+    const {id1, id2} = msg;
+    try {
+      User.requestFriend(id1, id2, ()=>{});
+      return io.emit("updateFriend", "");
+    }
+    catch(err) {
+      console.log(err);
+    }
+  });
+
+  socket.on("cancelFriend", async (msg) => {
+    console.log(msg);
+    const {id1, id2} = msg;
+    const user1 = await User.findOne({_id: id1});
+    const user2 = await User.findOne({_id: id2});
+    try {
+      User.removeFriend(user1, user2, ()=>{});
+      return io.emit("updateFriend", "");
     }
     catch(err) {
       console.log(err);
