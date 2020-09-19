@@ -14,10 +14,11 @@ function Chat() {
   const socket = socketIOClient(ENDPOINT);
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("user"));
+  const [lastMessages, setLastMessages] = useState([]);
   const [friends, setFriends] = useState(
     JSON.parse(localStorage.getItem("friends")) || []
   );
-  const [messageInput, setMessageInput] = useState("");
+  const [flag, setFlag] = useState(Math.random());
   const [selectedFriend, setSelectedFriend] = useState(
     friends.length > 0 ? friends[0] : null
   );
@@ -34,6 +35,7 @@ function Chat() {
   });
 
   useEffect(() => {
+    //Get messages with a specific user
     if (selectedFriend) {
       axios
         .post(
@@ -62,9 +64,42 @@ function Chat() {
     }
 
     return () => socket.disconnect();
-  }, [messageInput, selectedFriend]);
+  }, [selectedFriend]);
 
   useEffect(() => {
+    //Get all last messages
+    axios
+      .post(
+        `chats/getLastMessages`,
+        {
+          id: userInfo.auth_id,
+        },
+        {
+          headers: {
+            authorization: userInfo.auth_id + userInfo.auth_id.slice(-3),
+          },
+        }
+      )
+      .then((response) => {
+        let lastMess = response.data.lastMessages;
+        console.log(lastMess);
+        lastMess.sort((value1, value2) => {
+          console.log(
+            new Date(value1.time).getTime(),
+            new Date(value2.time).getTime()
+          );
+          if (new Date(value1.time).getTime() < new Date(value2.time).getTime())
+            return 1;
+          if (new Date(value2.time).getTime() < new Date(value1.time).getTime())
+            return -1;
+        });
+        setLastMessages([...lastMess]);
+      });
+  }, [flag]);
+
+
+  useEffect(() => {
+    //Update friendlist
     socket.on("updateFriend", (data) => {
       axios
         .post("user/friends", { username: userInfo.username })
@@ -77,34 +112,36 @@ function Chat() {
 
   const handleAddFriend = useCallback((id1, id2) => {
     socket.emit("addFriend", { id1, id2 });
-    setMessageInput("");
+    setFlag(Math.random());
   });
 
   const handleCancelFriend = useCallback((id1, id2) => {
     socket.emit("cancelFriend", { id1, id2 });
-    setMessageInput("");
+    setFlag(Math.random());
     if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
   });
 
   const handleSelectFriend = useCallback((friend) => {
-    setSelectedFriend({...friend});
+    setSelectedFriend({ ...friend });
   });
 
-  const handleSubmitChatMessage = useCallback((e) => {
+  const handleSubmitChatMessage = (e) => {
     e.preventDefault();
+    setFlag(Math.random());
     socket.emit("sendMsg", {
       from: userInfo.auth_id,
       to: selectedFriend.friend._id,
       message: e.target.messageInput.value,
     });
     e.target.messageInput.value = "";
-    setMessageInput("");
-  });
+    
+  };
 
   return (
     <Container className="chat-page" fluid={true}>
       <Row className="chat-content text-white">
         <ContactList
+          lastMessages={[...lastMessages]}
           userInfo={userInfo}
           friends={friends}
           handleSelectFriend={handleSelectFriend}
