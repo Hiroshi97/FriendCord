@@ -28,16 +28,13 @@ const ChatWindow = ({
   handleAddFriend,
   handleCancelFriend,
 }) => {
-  console.log("ABC");
   const userInfo = JSON.parse(localStorage.getItem("user"));
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(
+    selectedFriend && selectedFriend.status === "pending"
+  );
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    setShowToast(selectedFriend && selectedFriend.status === "pending");
-  }, [selectedFriend]);
 
   useEffect(() => {
     if (lastMessage.current)
