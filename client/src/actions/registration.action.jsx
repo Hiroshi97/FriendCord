@@ -13,31 +13,40 @@ export const signupSuccess = () => ({
   type: SIGNUP_SUCCESS
 });
 
-export const signupFailure = () => ({
-  type: SIGNUP_FAILURE
+export const signupFailure = (errors) => ({
+  type: SIGNUP_FAILURE,
+  payload: errors
 });
 
-// export const signup = (userInfo) => {
-//   return (dispatch) => {
-//     dispatch(signupRequest());
-//     axios
-//       .post("/auth/signup", {
-//         ...userInfo,
-//       })
-//       .then((res) => {
-//         localStorage.setItem("user", JSON.stringify(res.data));
-//         setTimeout(() => {
-//           dispatch(signupSuccess());
-//           triggerAlert(
-//             "success",
-//             "SIGN UP SUCCESS",
-//             "You have successfully signed up!"
-//           );
-//         }, 3000);
-//       })
-//       .catch((error) => {
-//         console.log(error.response);
-
-//       });
-//   };
-// };
+export const signup = (userInfo) => {
+  return (dispatch) => {
+    dispatch(signupRequest());
+    axios
+      .post("/auth/signup", {
+        ...userInfo,
+      })
+      .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        setTimeout(() => {
+          dispatch(signupSuccess());
+          axios
+            .post("user/friends", { _id: res.data.auth_id })
+            .then((response) => {
+              console.log(response);
+              localStorage.setItem(
+                "friends",
+                JSON.stringify(response.data.friendships)
+              );
+            });
+          triggerAlert(
+            "success",
+            "SIGN UP SUCCESS",
+            "You have successfully signed up!"
+          );
+        }, 2000);
+      })
+      .catch((error) => {
+        dispatch(signupFailure(error.response.data.errors));
+      });
+  };
+};
