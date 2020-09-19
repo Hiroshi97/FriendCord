@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   signupRequest,
   signupSuccess,
-  signupFailure,
+  signupFailure, signup
 } from "../../actions/registration.action";
 import { triggerAlert } from "../../utils/trigger-alert";
 
@@ -16,7 +16,8 @@ export default function Signup() {
   const isLoading = useSelector((state) => state.authState.loading);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState([]);
+  const errors = useSelector((state)=>state.authState.errors);
+  // const [errors, setErrors] = useState([]);
   const [info, setInfo] = useState({
     name: "",
     username: "",
@@ -50,37 +51,7 @@ export default function Signup() {
       password2: password2.value,
     };
 
-    dispatch(signupRequest());
-    axios
-      .post("/auth/signup", {
-        ...userInfo,
-      })
-      .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data));
-        setTimeout(() => {
-          dispatch(signupSuccess());
-          console.log(res.data.auth_id);
-          axios
-            .post("user/friends", { _id: res.data.auth_id })
-            .then((response) => {
-              console.log(response);
-              localStorage.setItem(
-                "friends",
-                JSON.stringify(response.data.friendships)
-              );
-            });
-          triggerAlert(
-            "success",
-            "SIGN UP SUCCESS",
-            "You have successfully signed up!"
-          );
-          history.push("/chat");
-        }, 2000);
-      })
-      .catch((error) => {
-        dispatch(signupFailure());
-        if (error.response) setErrors(error.response.data.errors);
-      });
+    dispatch(signup(userInfo));
   };
 
   return (

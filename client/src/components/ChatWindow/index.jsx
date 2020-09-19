@@ -28,13 +28,16 @@ const ChatWindow = ({
   handleAddFriend,
   handleCancelFriend,
 }) => {
+  console.log("ABC");
   const userInfo = JSON.parse(localStorage.getItem("user"));
-  const [showToast, setShowToast] = useState(
-    selectedFriend && selectedFriend.status === "pending"
-  );
+  const [showToast, setShowToast] = useState(false);
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    setShowToast(selectedFriend && selectedFriend.status === "pending");
+  }, [selectedFriend]);
 
   useEffect(() => {
     if (lastMessage.current)
@@ -91,34 +94,31 @@ const ChatWindow = ({
           </Row>
         </Col>
       </Row>
-      {selectedFriend.status === "pending" && (
-        <Toast show={showToast}>
-          <Toast.Body>
-            <p>
-              {selectedFriend.friend.username +
-                " has sent you a friend request"}
-            </p>
-            <Button
-              size="sm"
-              onClick={() =>
-                handleClickAddFriend(userInfo.auth_id, selectedFriend._id)
-              }
-            >
-              Accept
-            </Button>
-            <Button
-              size="sm"
-              className="ml-2"
-              variant="secondary"
-              onClick={() =>
-                handleClickCancelFriend(userInfo.auth_id, selectedFriend._id)
-              }
-            >
-              Cancel
-            </Button>
-          </Toast.Body>
-        </Toast>
-      )}
+      <Toast show={showToast}>
+        <Toast.Body>
+          <p>
+            {selectedFriend.friend.username + " has sent you a friend request"}
+          </p>
+          <Button
+            size="sm"
+            onClick={() =>
+              handleClickAddFriend(userInfo.auth_id, selectedFriend._id)
+            }
+          >
+            Accept
+          </Button>
+          <Button
+            size="sm"
+            className="ml-2"
+            variant="secondary"
+            onClick={() =>
+              handleClickCancelFriend(userInfo.auth_id, selectedFriend._id)
+            }
+          >
+            Cancel
+          </Button>
+        </Toast.Body>
+      </Toast>
     </Card.Header>
   );
 
