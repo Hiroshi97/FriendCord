@@ -144,7 +144,7 @@ function Chat() {
         />
         {selectedFriend && (
           <ChatWindow
-            selectedFriend={{ ...selectedFriend }}
+            selectedFriend={selectedFriend}
             handleSubmitChatMessage={handleSubmitChatMessage}
             messages={messages}
             handleAddFriend={handleAddFriend}
