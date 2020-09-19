@@ -106,22 +106,22 @@ function Chat() {
 
   const handleAddFriend = useCallback((id1, id2) => {
     socket.emit("addFriend", { id1, id2 });
-    setFlag(Math.random());
-  });
+    setFlag(Math.random().toString(36).substring(7));
+  }, [friends.length]);
 
   const handleCancelFriend = useCallback((id1, id2) => {
     socket.emit("cancelFriend", { id1, id2 });
-    setFlag(Math.random());
+    setFlag(Math.random().toString(36).substring(7));
     if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
-  });
+  }, [friends.length]);
 
   const handleSelectFriend = useCallback((friend) => {
     setSelectedFriend({ ...friend });
-  });
+  }, [messages.length]);
 
   const handleSubmitChatMessage = (e) => {
     e.preventDefault();
-    setFlag(Math.random());
+    setFlag(Math.random().toString(36).substring(7));
     socket.emit("sendMsg", {
       from: userInfo.auth_id,
       to: selectedFriend.friend._id,
