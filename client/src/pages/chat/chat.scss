@@ -45,6 +45,11 @@
       background-color: rgba(0, 0, 0, 0.4) !important;
       color: white !important;
       .contact-list {
+        .time-wrapper {
+          span {
+            font-size: 14px;
+          }
+        }
         .tab {
           .row {
             .col-3 {
