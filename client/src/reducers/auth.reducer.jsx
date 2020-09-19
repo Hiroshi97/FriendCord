@@ -1,6 +1,7 @@
 const initialState = {
   loading: false,
   result: localStorage.getItem("user") ? true : false,
+  errors: []
 };
 
 const LOGIN_REQUEST = "LOGIN_REQUEST";
@@ -24,14 +25,22 @@ const AuthReducer = (state = initialState, { type, payload }) => {
       return {
         loading: false,
         result: true,
+        errors: []
       };
 
+    case SIGNUP_FAILURE: 
+     return {
+       loading: false,
+       result: false,
+       errors: payload
+     }
+
     case LOGIN_FAILURE:
-    case SIGNUP_FAILURE:
     case LOGOUT:
       return {
         loading: false,
         result: false,
+        errors: []
       };
 
     default:
