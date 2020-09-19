@@ -54,29 +54,28 @@ const ContactList = ({
 
   //Last messages processor
   const processLastMessages = () => {
-    const processed = lastMessages.map((message)=>{
+    const processed = lastMessages.map((message) => {
       if (message.from === userInfo.auth_id) {
         return {
           _id: message._id,
           userId: message.to,
           message: message.message,
           username: getUsername(message.to),
-          time: getTime(message.time)
-        }
-      }
-      else {
+          time: getTime(message.time),
+        };
+      } else {
         return {
           _id: message._id,
           userId: message.from,
           message: message.message,
           username: getUsername(message.from),
-          time: getTime(message.time)
-        }
+          time: getTime(message.time),
+        };
       }
-    })
+    });
 
     return processed;
-  }
+  };
 
   //Get friend's avatar
   const getAvatar = (id) => {
@@ -136,19 +135,19 @@ const ContactList = ({
           </div>
         </div>
       </Row>
+      {renderTabs()}
     </Card.Header>
   );
 
   const renderBody = () => (
     <Card.Body className="p-0 contact-list text-left">
-      {renderTabs()}
       {selectedTab === "chats" ? renderChatsTab() : renderFriendsTab()}
     </Card.Body>
   );
 
   const renderTabs = () => (
     <Nav
-      className="nav-justified"
+      className="nav-justified mt-1"
       variant="tabs"
       defaultActiveKey={selectedTab}
     >
@@ -177,16 +176,14 @@ const ContactList = ({
 
   const renderChatsTab = () => {
     return (
-      <div className="tab mt-3">
+      <div className="tab">
         {lastMessages.length > 0 &&
           processLastMessages().map((info) => {
             return (
-              (info.username) && (
+              info.username && (
                 <Button
                   onClick={() => {
-                    onClickChat(
-                      info.userId
-                    );
+                    onClickChat(info.userId);
                   }}
                   key={info._id}
                   className="contact w-100"
@@ -195,9 +192,7 @@ const ContactList = ({
                     <Col xs="3">
                       <div className="avatar-wrapper">
                         <Image
-                          src={
-                            getAvatar(info.userId)
-                          }
+                          src={getAvatar(info.userId)}
                           alt=""
                           roundedCircle
                         />
@@ -208,9 +203,7 @@ const ContactList = ({
                       sm="6"
                       className="text-left username-wrapper mt-auto pl-0"
                     >
-                      <span className="font-weight-bold">
-                        {info.username}
-                      </span>
+                      <span className="font-weight-bold">{info.username}</span>
                       <p className="last-message text-truncate">
                         {info.message}
                       </p>
@@ -219,9 +212,7 @@ const ContactList = ({
                       sm="3"
                       className="time-wrapper mt-auto text-right pl-2"
                     >
-                      <span className="message-time">
-                        {info.time}
-                      </span>
+                      <span className="message-time">{info.time}</span>
                       <p className="unread-messages">
                         {/* <Badge variant="dark">1</Badge> */}
                       </p>
@@ -237,7 +228,7 @@ const ContactList = ({
 
   const renderFriendsTab = () => {
     return (
-      <div className="tab mt-3">
+      <div className="tab">
         <Button className="contact w-100">
           <Row>
             <Col xs="3">
