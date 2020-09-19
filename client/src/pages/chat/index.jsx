@@ -23,7 +23,6 @@ function Chat() {
     friends.length > 0 ? friends[0] : null
   );
   const messages = useSelector((state) => state.chatsState.messages);
-
   //Sort friendlist
   friends.sort((f1, f2) => {
     if (f1.status === "pending" && f2.status === "accepted") return -1;
@@ -82,12 +81,7 @@ function Chat() {
       )
       .then((response) => {
         let lastMess = response.data.lastMessages;
-        console.log(lastMess);
         lastMess.sort((value1, value2) => {
-          console.log(
-            new Date(value1.time).getTime(),
-            new Date(value2.time).getTime()
-          );
           if (new Date(value1.time).getTime() < new Date(value2.time).getTime())
             return 1;
           if (new Date(value2.time).getTime() < new Date(value1.time).getTime())
