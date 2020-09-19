@@ -58,7 +58,7 @@ const AddFriendWrapper = ({
             You and <strong>{personInfo.username}</strong> are friends.
           </p>
           <Button
-            variant="secondary"
+            variant="danger"
             onClick={() =>
               handleClickCancelFriend(userInfo.auth_id, personInfo._id)
             }
