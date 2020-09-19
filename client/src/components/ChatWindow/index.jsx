@@ -59,134 +59,134 @@ const ChatWindow = ({
     handleCloseToast();
   };
 
+  const renderHeader = () => (
+    <Card.Header>
+      <Row>
+        <div className="avatar-wrapper">
+          <Image src={selectedFriend.friend.avatar} alt="" roundedCircle />
+          <span className="status"></span>
+        </div>
+        <div className="username-wrapper mt-auto pl-2 text-left">
+          <span className="font-weight-bold">
+            {selectedFriend.friend.username}
+          </span>
+          <p>{selectedFriend.friend.email}</p>
+        </div>
+        <Col
+          xs="12"
+          sm="4"
+          md="3"
+          className="options-wrapper ml-auto mt-auto pb-4"
+        >
+          <Row className="align-items-center justify-content-end">
+            <Button className="px-2">
+              <FontAwesomeIcon icon={faVideo} />
+            </Button>
+            <Button className="px-2">
+              <FontAwesomeIcon icon={faPhone} />
+            </Button>
+            <Button className="px-2">
+              <FontAwesomeIcon icon={faEllipsisV} />
+            </Button>
+          </Row>
+        </Col>
+      </Row>
+      {selectedFriend.status === "pending" && (
+        <Toast show={showToast}>
+          <Toast.Body>
+            <p>
+              {selectedFriend.friend.username +
+                " has sent you a friend request"}
+            </p>
+            <Button
+              size="sm"
+              onClick={() =>
+                handleClickAddFriend(userInfo.auth_id, selectedFriend._id)
+              }
+            >
+              Accept
+            </Button>
+            <Button
+              size="sm"
+              className="ml-2"
+              variant="secondary"
+              onClick={() =>
+                handleClickCancelFriend(userInfo.auth_id, selectedFriend._id)
+              }
+            >
+              Cancel
+            </Button>
+          </Toast.Body>
+        </Toast>
+      )}
+    </Card.Header>
+  );
+
+  const renderBody = () => (
+    <Card.Body className="messages-window">
+      <div className="messages">
+        {messages.length > 0 &&
+          messages.map((m, index) => (
+            <div key={index}>
+              <MessageCard
+                text={m.message}
+                sender={userInfo.auth_id === m.from}
+                avatar={
+                  userInfo.auth_id === m.from
+                    ? userInfo.avatar
+                    : selectedFriend.friend.avatar
+                }
+                messageTime={m.created_at}
+              />
+            </div>
+          ))}
+        <div ref={lastMessage} />
+      </div>
+    </Card.Body>
+  );
+
+  const renderFooter = () => (
+    <Card.Footer>
+      <Form autoComplete="off" onSubmit={handleSubmitMessage}>
+        <InputGroup>
+          <InputGroup.Prepend type="prepend">
+            <Button variant="secondary">
+              <FontAwesomeIcon icon={faPaperclip} />
+            </Button>
+          </InputGroup.Prepend>
+          <Form.Control
+            // as="textarea"
+            // rows="2"
+            autoComplete="off"
+            id="messageInput"
+            placeholder="Type a message..."
+            className="message-input"
+            defaultValue=""
+            // onKeyPress={handleKeyPress}
+          />
+          <InputGroup.Append type="append">
+            <Button
+              type="submit"
+              disabled={selectedFriend === ""}
+              variant="secondary"
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </Form>
+    </Card.Footer>
+  );
+
   return (
     <>
-        <Col className="text-center chat-window">
-          <Card>
-            <Card.Header>
-              <Row>
-                <div className="avatar-wrapper">
-                  <Image
-                    src={selectedFriend.friend.avatar}
-                    alt=""
-                    roundedCircle
-                  />
-                  <span className="status"></span>
-                </div>
-                <div className="username-wrapper mt-auto pl-2 text-left">
-                  <span className="font-weight-bold">
-                    {selectedFriend.friend.username}
-                  </span>
-                  <p>{selectedFriend.friend.email}</p>
-                </div>
-                <Col
-                  xs="12"
-                  sm="4"
-                  md="3"
-                  className="options-wrapper ml-auto mt-auto pb-4"
-                >
-                  <Row className="align-items-center justify-content-end">
-                    <Button className="px-2">
-                      <FontAwesomeIcon icon={faVideo} />
-                    </Button>
-                    <Button className="px-2">
-                      <FontAwesomeIcon icon={faPhone} />
-                    </Button>
-                    <Button className="px-2">
-                      <FontAwesomeIcon icon={faEllipsisV} />
-                    </Button>
-                  </Row>
-                </Col>
-              </Row>
-              {selectedFriend.status === "pending" && (
-                <Toast show={showToast}>
-                  <Toast.Body>
-                    <p>
-                      {selectedFriend.friend.username +
-                        " has sent you a friend request"}
-                    </p>
-                    <Button
-                      size="sm"
-                      onClick={() =>
-                        handleClickAddFriend(
-                          userInfo.auth_id,
-                          selectedFriend._id
-                        )
-                      }
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="ml-2"
-                      variant="secondary"
-                      onClick={() =>
-                        handleClickCancelFriend(
-                          userInfo.auth_id,
-                          selectedFriend._id
-                        )
-                      }
-                    >
-                      Cancel
-                    </Button>
-                  </Toast.Body>
-                </Toast>
-              )}
-            </Card.Header>
-
-            <Card.Body className="messages-window">
-              
-              <div className="messages">
-                {messages.length > 0 &&
-                  messages.map((m, index) => (
-                    <div key={index}>
-                      <MessageCard
-                        text={m.message}
-                        sender={userInfo.auth_id === m.from}
-                        avatar={
-                          userInfo.auth_id === m.from
-                            ? userInfo.avatar
-                            : selectedFriend.friend.avatar
-                        }
-                        messageTime={m.created_at}
-                      />
-                    </div>
-                  ))}
-                <div ref={lastMessage} />
-              </div>
-            </Card.Body>
-            <Card.Footer>
-              <Form autoComplete="off" onSubmit={handleSubmitMessage}>
-                <InputGroup>
-                  <InputGroup.Prepend type="prepend">
-                    <Button variant="secondary">
-                      <FontAwesomeIcon icon={faPaperclip} />
-                    </Button>
-                  </InputGroup.Prepend>
-                  <Form.Control
-                    // as="textarea"
-                    // rows="2"
-                    autoComplete="off"
-                    id="messageInput"
-                    placeholder="Type a message..."
-                    className="message-input"
-                    defaultValue=""
-                    // onKeyPress={handleKeyPress}
-                  />
-                  <InputGroup.Append type="append">
-                    <Button
-                      type="submit"
-                      disabled={selectedFriend === ""}
-                      variant="secondary"
-                    >
-                      <FontAwesomeIcon icon={faPaperPlane} />
-                    </Button>
-                  </InputGroup.Append>
-                </InputGroup>
-              </Form>
-            </Card.Footer>
-          </Card>
-        </Col>
+      <Col className="text-center chat-window">
+        <Card>
+          {renderHeader()}
+          {renderBody()}
+          {renderFooter()}
+        </Card>
+      </Col>
     </>
   );
 };
