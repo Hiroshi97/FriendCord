@@ -34,6 +34,20 @@ function Chat() {
   });
 
   useEffect(() => {
+    socket.on("receiveMsg", (data) => {
+      if (
+        (selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
+        (selectedFriend._id === data.to && userInfo.auth_id === data.from)
+      ) {
+        dispatch(postMessage(data));
+        setFlag(Math.random().toString(36).substring(7));
+      }
+    });
+
+    return () => socket.disconnect();
+  }, []);
+
+  useEffect(() => {
     //Get messages with a specific user
     if (selectedFriend) {
       axios
@@ -52,18 +66,8 @@ function Chat() {
         .then((response) => {
           dispatch(getMessages([...response.data.messages]));
         });
-
-      socket.on("receiveMsg", (data) => {
-        if (
-          (selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
-          (selectedFriend._id === data.to && userInfo.auth_id === data.from)
-        )
-          dispatch(postMessage(data));
-      });
     }
-
-    return () => socket.disconnect();
-  }, [selectedFriend]);
+  }, [selectedFriend, flag]);
 
   useEffect(() => {
     //Get all last messages
@@ -91,7 +95,6 @@ function Chat() {
       });
   }, [flag]);
 
-
   useEffect(() => {
     //Update friendlist
     socket.on("updateFriend", (data) => {
@@ -104,20 +107,29 @@ function Chat() {
     });
   });
 
-  const handleAddFriend = useCallback((id1, id2) => {
-    socket.emit("addFriend", { id1, id2 });
-    setFlag(Math.random().toString(36).substring(7));
-  }, [friends.length]);
+  const handleAddFriend = useCallback(
+    (id1, id2) => {
+      socket.emit("addFriend", { id1, id2 });
+      setFlag(Math.random().toString(36).substring(7));
+    },
+    [friends.length]
+  );
 
-  const handleCancelFriend = useCallback((id1, id2) => {
-    socket.emit("cancelFriend", { id1, id2 });
-    setFlag(Math.random().toString(36).substring(7));
-    if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
-  }, [friends.length]);
+  const handleCancelFriend = useCallback(
+    (id1, id2) => {
+      socket.emit("cancelFriend", { id1, id2 });
+      setFlag(Math.random().toString(36).substring(7));
+      if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
+    },
+    [friends.length]
+  );
 
-  const handleSelectFriend = useCallback((friend) => {
-    setSelectedFriend({ ...friend });
-  }, [messages.length]);
+  const handleSelectFriend = useCallback(
+    (friend) => {
+      setSelectedFriend({ ...friend });
+    },
+    [messages.length]
+  );
 
   const handleSubmitChatMessage = (e) => {
     e.preventDefault();
@@ -128,7 +140,6 @@ function Chat() {
       message: e.target.messageInput.value,
     });
     e.target.messageInput.value = "";
-    
   };
 
   return (
