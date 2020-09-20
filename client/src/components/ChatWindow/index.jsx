@@ -29,12 +29,14 @@ const ChatWindow = ({
   handleCancelFriend,
 }) => {
   const userInfo = JSON.parse(localStorage.getItem("user"));
-  const [showToast, setShowToast] = useState(
-    selectedFriend && selectedFriend.status === "pending"
-  );
+  const [showToast, setShowToast] = useState(false);
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    setShowToast(selectedFriend && selectedFriend.status === "pending");
+  }, [selectedFriend]);
 
   useEffect(() => {
     if (lastMessage.current)
@@ -91,7 +93,7 @@ const ChatWindow = ({
           </Row>
         </Col>
       </Row>
-      <Toast show={showToast}>
+      <Toast show={showToast} animation={false}>
         <Toast.Body>
           <p>
             {selectedFriend.friend.username + " has sent you a friend request"}
