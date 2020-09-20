@@ -123,20 +123,24 @@ const ChatWindow = ({
     <Card.Body className="messages-window">
       <div className="messages">
         {messages.length > 0 &&
-          messages.map((m, index) => (
-            <div key={index}>
-              <MessageCard
-                text={m.message}
-                sender={userInfo.auth_id === m.from}
-                avatar={
-                  userInfo.auth_id === m.from
-                    ? userInfo.avatar
-                    : selectedFriend.friend.avatar
-                }
-                messageTime={m.created_at}
-              />
-            </div>
-          ))}
+          messages.map(
+            (m, index) =>
+              (selectedFriend._id === m.from ||
+                selectedFriend._id === m.to) && (
+                <div key={index}>
+                  <MessageCard
+                    text={m.message}
+                    sender={userInfo.auth_id === m.from}
+                    avatar={
+                      userInfo.auth_id === m.from
+                        ? userInfo.avatar
+                        : selectedFriend.friend.avatar
+                    }
+                    messageTime={m.created_at}
+                  />
+                </div>
+              )
+          )}
         <div ref={lastMessage} />
       </div>
     </Card.Body>
