@@ -93,6 +93,11 @@ io.on("connection", (socket) => {
       console.log(err);
     }
   });
+
+  socket.on('disconnect', () => {
+    socket.removeAllListeners();
+ });
+ 
 });
 
 server.listen(port, function () {
