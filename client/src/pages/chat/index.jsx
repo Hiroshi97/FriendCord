@@ -9,9 +9,9 @@ import ContactList from "../../components/ContactList";
 import ChatWindow from "../../components/ChatWindow";
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT || "localhost:8000";
+const socket = socketIOClient(ENDPOINT, {forceNew: true  });
 
 function Chat() {
-  const socket = socketIOClient(ENDPOINT);
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("user"));
   const [lastMessages, setLastMessages] = useState([]);
@@ -47,7 +47,7 @@ function Chat() {
       }
     });
 
-    return () => socket.disconnect();
+    return () => socket.off("receiveMsg");
   }, []);
 
   useEffect(() => {
@@ -108,12 +108,18 @@ function Chat() {
           setFriends([...res.data.friendships]);
         });
     });
-  }, [action]);
+    return () => socket.off("updateFriend")
+  });
 
   const handleAddFriend = useCallback(
     (id1, id2) => {
       socket.emit("addFriend", { id1, id2 });
       setAction(Math.random().toString(36).substring(7));
+
+      if (selectedFriend && selectedFriend._id !== id2) {
+        const index = friends.findIndex((f) => console.log(f));
+        setSelectedFriend(friends[index]);
+      }
     }
   , [friends.length]);
 
