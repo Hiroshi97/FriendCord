@@ -18,7 +18,8 @@ function Chat() {
   const [friends, setFriends] = useState(
     JSON.parse(localStorage.getItem("friends")) || []
   );
-  const [flag, setFlag] = useState(Math.random());
+  const [flag, setFlag] = useState(Math.random()); //Used when a message is sent
+  const [action, setAction] = useState(Math.random()); // Used when an action is called (related to friend list)
   const [selectedFriend, setSelectedFriend] = useState(
     friends.length > 0 ? friends[0] : null
   );
@@ -34,10 +35,12 @@ function Chat() {
   });
 
   useEffect(() => {
+    if (!selectedFriend)
+      setSelectedFriend(friends.length > 0 ? friends[0] : null);
     socket.on("receiveMsg", (data) => {
       if (
-        (selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
-        (selectedFriend._id === data.to && userInfo.auth_id === data.from)
+        ((selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
+        (selectedFriend._id === data.to && userInfo.auth_id === data.from))
       ) {
         dispatch(postMessage(data));
         setFlag(Math.random().toString(36).substring(7));
@@ -105,24 +108,21 @@ function Chat() {
           setFriends([...res.data.friendships]);
         });
     });
-  });
+  }, [action]);
 
   const handleAddFriend = useCallback(
     (id1, id2) => {
       socket.emit("addFriend", { id1, id2 });
-      setFlag(Math.random().toString(36).substring(7));
-    },
-    [friends.length]
-  );
+      setAction(Math.random().toString(36).substring(7));
+    }
+  , [friends.length]);
 
   const handleCancelFriend = useCallback(
     (id1, id2) => {
       socket.emit("cancelFriend", { id1, id2 });
-      setFlag(Math.random().toString(36).substring(7));
+      setAction(Math.random().toString(36).substring(7));
       if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
-    },
-    [friends.length]
-  );
+    }, [friends.length]);
 
   const handleSelectFriend = useCallback(
     (friend) => {
@@ -140,6 +140,7 @@ function Chat() {
       message: e.target.messageInput.value,
     });
     e.target.messageInput.value = "";
+    setFlag(Math.random().toString(36).substring(7));
   };
 
   return (
