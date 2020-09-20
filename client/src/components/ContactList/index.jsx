@@ -59,7 +59,7 @@ const ContactList = ({
         return {
           _id: message._id,
           userId: message.to,
-          message: message.message,
+          message: "You: " + message.message,
           username: getUsername(message.to),
           time: getTime(message.time),
         };
@@ -67,7 +67,7 @@ const ContactList = ({
         return {
           _id: message._id,
           userId: message.from,
-          message: message.message,
+          message: getUsername(message.from) + ": " + message.message,
           username: getUsername(message.from),
           time: getTime(message.time),
         };
