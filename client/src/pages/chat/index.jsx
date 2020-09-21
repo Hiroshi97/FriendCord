@@ -9,7 +9,7 @@ import ContactList from "../../components/ContactList";
 import ChatWindow from "../../components/ChatWindow";
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT || "localhost:8000";
-const socket = socketIOClient(ENDPOINT, {forceNew: true  });
+const socket = socketIOClient(ENDPOINT, { forceNew: true });
 
 function Chat() {
   const dispatch = useDispatch();
@@ -36,18 +36,7 @@ function Chat() {
 
   useEffect(() => {
     if (!selectedFriend)
-      setSelectedFriend(friends.length > 0 ? friends[0] : null);
-    socket.on("receiveMsg", (data) => {
-      if (
-        ((selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
-        (selectedFriend._id === data.to && userInfo.auth_id === data.from))
-      ) {
-        dispatch(postMessage(data));
-        setFlag(Math.random().toString(36).substring(7));
-      }
-    });
-
-    return () => socket.off("receiveMsg");
+      setSelectedFriend(friends.length > 0 ? friends[0] : null);  
   }, []);
 
   useEffect(() => {
@@ -108,7 +97,21 @@ function Chat() {
           setFriends([...res.data.friendships]);
         });
     });
-    return () => socket.off("updateFriend")
+
+    socket.on("receiveMsg", (data) => {
+      if (
+        (selectedFriend._id === data.from && userInfo.auth_id === data.to) ||
+        (selectedFriend._id === data.to && userInfo.auth_id === data.from)
+      ) {
+        dispatch(postMessage(data));
+        setFlag(Math.random().toString(36).substring(7));
+      }
+    });
+
+    return () => {
+      socket.off("receiveMsg");
+      socket.off("updateFriend");
+    };
   });
 
   const handleAddFriend = useCallback(
@@ -120,15 +123,18 @@ function Chat() {
         const index = friends.findIndex((f) => console.log(f));
         setSelectedFriend(friends[index]);
       }
-    }
-  , [friends.length]);
+    },
+    [friends.length]
+  );
 
   const handleCancelFriend = useCallback(
     (id1, id2) => {
       socket.emit("cancelFriend", { id1, id2 });
       setAction(Math.random().toString(36).substring(7));
       if (selectedFriend && selectedFriend._id === id2) setSelectedFriend(null);
-    }, [friends.length]);
+    },
+    [friends.length]
+  );
 
   const handleSelectFriend = useCallback(
     (friend) => {
@@ -139,7 +145,6 @@ function Chat() {
 
   const handleSubmitChatMessage = (e) => {
     e.preventDefault();
-    setFlag(Math.random().toString(36).substring(7));
     socket.emit("sendMsg", {
       from: userInfo.auth_id,
       to: selectedFriend.friend._id,
