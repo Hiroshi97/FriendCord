@@ -6,16 +6,17 @@ const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 
 export const signupRequest = () => ({
-  type: SIGNUP_REQUEST
+  type: SIGNUP_REQUEST,
 });
 
-export const signupSuccess = () => ({
-  type: SIGNUP_SUCCESS
+export const signupSuccess = (userInfo) => ({
+  type: SIGNUP_SUCCESS,
+  payload: userInfo,
 });
 
 export const signupFailure = (errors) => ({
   type: SIGNUP_FAILURE,
-  payload: errors
+  payload: errors,
 });
 
 export const signup = (userInfo) => {
@@ -27,17 +28,17 @@ export const signup = (userInfo) => {
       })
       .then((res) => {
         localStorage.setItem("user", JSON.stringify(res.data));
+        axios
+          .post("user/friends", { _id: res.data.auth_id })
+          .then((response) => {
+            console.log(response);
+            localStorage.setItem(
+              "friends",
+              JSON.stringify(response.data.friendships)
+            );
+          });
         setTimeout(() => {
-          dispatch(signupSuccess());
-          axios
-            .post("user/friends", { _id: res.data.auth_id })
-            .then((response) => {
-              console.log(response);
-              localStorage.setItem(
-                "friends",
-                JSON.stringify(response.data.friendships)
-              );
-            });
+          dispatch(signupSuccess(res.data));
           triggerAlert(
             "success",
             "SIGN UP SUCCESS",

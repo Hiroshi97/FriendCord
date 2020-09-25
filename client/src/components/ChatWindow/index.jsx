@@ -28,7 +28,7 @@ const ChatWindow = ({
   handleAddFriend,
   handleCancelFriend,
 }) => {
-  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const userInfo = useSelector(state => state.authState.userInfo);
   const [showToast, setShowToast] = useState(false);
   const lastMessage = useRef(null);
   const prevLengthRef = useRef(messages.length);

@@ -13,7 +13,7 @@ const socket = socketIOClient(ENDPOINT, { forceNew: true });
 
 function Chat() {
   const dispatch = useDispatch();
-  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const userInfo = useSelector(state => state.authState.userInfo);
   const [lastMessages, setLastMessages] = useState([]);
   const [friends, setFriends] = useState(
     JSON.parse(localStorage.getItem("friends")) || []

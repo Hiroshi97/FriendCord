@@ -11,6 +11,9 @@
         }
       }
       .modal-body {
+        #avatarUpload {
+          display: none;
+        }
         .toast {
           position: absolute;
           background-color: #444444;
@@ -22,6 +25,31 @@
           background-color: rgba(255, 255, 255, 0.1) !important;
           border: 0 !important;
           color: white !important;
+        }
+        .avatar-settings {
+          position: relative;
+          img {
+            width: 80px;
+            height: 80px;
+          }
+          .avatar-overlay {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, 0);
+            width: 64px;
+            height: 64px;
+            background-color: white;
+            opacity: 0;
+            transition: 0.2s ease-in-out;
+            border-radius: 50%;
+            padding-top: 4%;
+            pointer-events: none;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
         }
       }
     }
@@ -68,15 +96,17 @@
         width: 70px;
         height: 70px;
         img {
+          width: 70px;
+          height: 70px;
           border: 2px solid white !important;
         }
         .status {
           position: absolute;
           display: block;
           bottom: 10px;
-          left: 55px;
-          width: 10px;
-          height: 10px;
+          left: 58px;
+          width: 12px;
+          height: 12px;
           border: 1px solid white;
           border-radius: 50%;
           background: rgb(3, 253, 3);

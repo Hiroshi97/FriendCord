@@ -21,7 +21,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 //Import Routes
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -34,6 +33,9 @@ app.use("/chats", chatsRoutes);
 mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () =>
   console.log("connected to DB")
 );
+
+//To use findOneAndUpdate
+mongoose.set('useFindAndModify', false);
 
 // Send all requests to index.html`
 app.use(express.static(path.resolve(__dirname, "../client/build")));

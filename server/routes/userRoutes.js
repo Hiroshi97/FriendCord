@@ -57,4 +57,24 @@ router.get("/suggestions", async (req, res) => {
   }
 });
 
+router.post("/updateAvatar", async (req, res)=> {
+  try {
+    const { username, avatar } = req.body;
+    console.log(avatar);
+    const newUser = await User.findOneAndUpdate({username}, {avatar}, {new: true});
+
+    return res.json({
+      auth_id: newUser._id,
+      name: newUser.name,
+      username: newUser.username,
+      email: newUser.email,
+      avatar: newUser.avatar
+  });
+  }
+  catch (error){
+    console.log(error.message);
+return res.status(500).json({ error: error.message });
+  }
+})
+
 module.exports = router;

@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button, Form, Image, Toast } from "react-bootstrap";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const AddFriendWrapper = ({
   friends,
@@ -11,7 +12,7 @@ const AddFriendWrapper = ({
   handleCancelFriend,
 }) => {
   const usernameRef = useRef(null);
-  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const userInfo = useSelector(state => state.authState.userInfo);
   const [personInfo, setPersonInfo] = useState(null);
   const [showError, setShowError] = useState(false);
   const handleCloseModal = () => {

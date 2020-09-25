@@ -22,6 +22,7 @@ import {
 import { Link } from "react-router-dom";
 import AddFriendWrapper from "./AddFriendWrapper";
 import SettingsWrapper from "./SettingsWrapper";
+import { useSelector } from "react-redux";
 
 const ContactList = ({
   lastMessages,
@@ -33,7 +34,7 @@ const ContactList = ({
   const [AFWshow, setAFWShow] = useState(false);
   const [SWshow, setSWShow] = useState(false);
   const [selectedTab, setSelectedTab] = useState("chats");
-  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const userInfo = useSelector(state => state.authState.userInfo);
 
   //Add friend wrapper modal
   const handleAFWClose = () => setAFWShow(false);

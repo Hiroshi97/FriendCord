@@ -10,8 +10,9 @@ const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
 
-const loginSuccess = () => ({
+const loginSuccess = (userInfo) => ({
   type: LOGIN_SUCCESS,
+  payload: userInfo
 });
 
 const loginFailure = (error) => ({
@@ -37,7 +38,7 @@ export const login = (username, password) => {
           localStorage.setItem("friends", JSON.stringify(res.data.friendships));
         });
         setTimeout(() => {
-          dispatch(loginSuccess());
+          dispatch(loginSuccess(res.data));
           triggerAlert(
             "success",
             "LOGIN SUCCESS",
