@@ -177,7 +177,7 @@ const AddFriendWrapper = ({
             onKeyPress={handleKeyPress}
           />
           {personInfo && (
-            <div className="text-center">
+            <div className="avatar-settings text-center">
               <Image
                 className="d-block mx-auto mt-3"
                 src={personInfo.avatar}
