@@ -95,6 +95,7 @@ function Chat() {
         .then((res) => {
           localStorage.setItem("friends", JSON.stringify(res.data.friendships));
           setFriends([...res.data.friendships]);
+          setSelectedFriend(res.data.friendships[0] || null);
         });
     });
 
