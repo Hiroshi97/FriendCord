@@ -37,9 +37,11 @@ const SettingsWrapper = ({ show, handleClose }) => {
   }
 
   const handleClickSave = (e) => {
-    dispatch(updateAvatar(userInfo.username, avatarRef.current));
+    if (avatarRef.current)
+      dispatch(updateAvatar(userInfo.username, avatarRef.current));
     handleClose();
     setDisable(true);
+    avatarRef.current = null;
   }
 
   return (
